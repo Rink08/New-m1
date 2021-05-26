@@ -1,0 +1,717 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button defaultHref="main"></ion-back-button>
+    </ion-buttons> -->
+    <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-app style="margin-top: 27.5%;">
+  <ion-content>
+
+    <ion-slides #mySlider >
+
+      <!-- Basic registation details -->
+      <ion-slide>
+        <form [formGroup]="slideTwoForm">
+        <ion-label>Basic Details</ion-label>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Name</ion-label>
+              <ion-input type="text" formControlName="firstName"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-radio-group formControlName="gender">
+                <ion-list-header>
+                  <ion-label>Gender</ion-label>
+                </ion-list-header>
+                <ion-item>
+                  <ion-label>Male</ion-label>
+                  <ion-radio slot="start" color="tertiary" value="male" disabled></ion-radio>
+                </ion-item>
+
+                <ion-item>
+                  <ion-label>Female</ion-label>
+                  <ion-radio slot="start" color="tertiary" value="female"disabled></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Date</ion-label>
+              <ion-input type="text" formControlName="date"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Aadhar Number</ion-label>
+              <ion-input type="text" formControlName="aadhar"></ion-input>
+            </ion-item>
+
+
+            <ion-item>
+              <!-- <span item-right><ion-icon name="person"></ion-icon></span> -->
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="text" formControlName="email"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <!-- <span item-right><ion-icon name="phone-portrait"></ion-icon></span> -->
+              <ion-label position="floating">Phone Number</ion-label>
+              <ion-input type="text" formControlName="phone"></ion-input>
+            </ion-item>
+
+          </ion-list>
+
+          <ion-item>
+            <ion-label position="floating">Country<ion-text color="danger">*</ion-text></ion-label>
+            <ionic-selectable
+                [items]="countryInfo"
+                itemValueField= CountryName itemTextField= CountryName
+                headerColor="light"
+                [canSearch]="true"
+                (onChange)="onChangeCountry($event)"
+                searchFailText="nothing found"
+                formControlName="country" [class.invalid]="!slideTwoForm.controls.country.valid && (slideTwoForm.controls.country.dirty || submitAttempt)"
+                >
+                <ng-template ionicSelectableCloseButtonTemplate>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableTitleTemplate>
+                 Country
+                </ng-template>
+                </ionic-selectable>
+              </ion-item>
+                <ion-item>
+                <ion-label position="floating">State<ion-text color="danger">*</ion-text></ion-label>
+                <ionic-selectable
+                [items]="stateInfo"
+                itemValueField= StateName itemTextField= StateName
+                headerColor="light"
+                [canSearch]="true"
+                (onChange)="onChangeState($event)"
+                searchFailText="nothing found"
+                formControlName="state" [class.invalid]="!slideTwoForm.controls.state.valid && (slideTwoForm.controls.state.dirty || submitAttempt)"
+                >
+                <ng-template ionicSelectableCloseButtonTemplate>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableTitleTemplate>
+                  State
+                </ng-template>
+                </ionic-selectable>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">City<ion-text color="danger">*</ion-text></ion-label>
+                <ionic-selectable
+                [items]="cities"
+                itemValueField= city itemTextField= city
+                headerColor="light"
+                [canSearch]="true"
+                searchFailText="nothing found"
+                formControlName="city"
+
+                >
+                <ng-template ionicSelectableCloseButtonTemplate>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableTitleTemplate>
+                 City
+                </ng-template>
+                </ionic-selectable>
+              </ion-item>
+          <br>
+          <ion-button routerLink="/main"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+          <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="saveBasicDetails()">Save</ion-button>
+          <ion-button type="submit" color="light" shape="round" style="--box-shadow:none;" (click)="swipeNext()">Next</ion-button>
+        </form>
+        </ion-slide>
+
+      <!-- Personal details -->
+      <ion-slide>
+        <form [formGroup]="slideThreeForm">
+        <ion-label>Personal Details</ion-label>
+        <ion-item>
+          <ion-label position="floating">Marital Statue<ion-text color="danger">*</ion-text></ion-label>
+          <ion-select  okText="Select" cancelText="Cancel" formControlName="maritalStatue" [class.invalid]="!slideThreeForm.controls.maritalStatue.valid && (slideThreeForm.controls.maritalStatue.dirty || submitAttempt)">
+            <ion-select-option *ngFor="let ms of maritalstatue" value="{{ ms }}">
+              {{ ms }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Mother Tongue<ion-text color="danger">*</ion-text></ion-label>
+          <ionic-selectable
+            [items]="mt"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            searchFailText="nothing found"
+            formControlName="mothertongue" [class.invalid]="!slideThreeForm.controls.mothertongue.valid && (slideThreeForm.controls.mothertongue.dirty || submitAttempt)"
+            >
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              Mother Tongue
+            </ng-template>
+
+            </ionic-selectable>
+          </ion-item>
+
+
+        <ion-item>
+          <ion-label position="floating">Caste<ion-text color="danger">*</ion-text></ion-label>
+          <ionic-selectable
+            [items]="caste"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            searchFailText="nothing found"
+            (onChange)="onChangeCaste($event)"
+            formControlName="caste" [class.invalid]="!slideThreeForm.controls.caste.valid && (slideThreeForm.controls.caste.dirty || submitAttempt)"
+            >
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              Caste
+            </ng-template>
+
+            </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Sub-Caste</ion-label>
+          <ionic-selectable
+            [items]="subcaste"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            searchFailText="nothing found"
+            formControlName="subcaste">
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              Sub-Caste
+            </ng-template>
+
+            </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Profile Photo</ion-label>
+          <ion-button color="light" shape="round" style="--box-shadow:none;">Choose Images</ion-button>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Weight</ion-label>
+          <ion-range min="40" max="200" color="primary" pin formControlName="weight">
+            <ion-label slot="start">40</ion-label>
+            <ion-label slot="end">200</ion-label>
+          </ion-range>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Height<ion-text color="danger">*</ion-text></ion-label>
+          <ionic-selectable
+            #selectComponent
+            [items]="heightRange"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            (onChange)="portChange($event)"
+            searchFailText="nothing found"
+            formControlName="height" [class.invalid]="!slideThreeForm.controls.height.valid && (slideThreeForm.controls.height.dirty || submitAttempt)"
+            >
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              Height
+            </ng-template>
+
+            </ionic-selectable>
+          </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">About me</ion-label>
+          <ion-textarea placeholder="Write about yourself" formControlName="aboutme"></ion-textarea>
+        </ion-item>
+        <br>
+        <ion-button (click)="swipeBack()"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+        <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="savePersonalDetails()">Save</ion-button>
+        <ion-button  (click)="swipeNext()"  color="light" shape="round" style="--box-shadow:none;">Next</ion-button>
+      </form>
+      </ion-slide>
+
+       <!-- Eductional details -->
+      <ion-slide>
+        <form [formGroup]="slideFourForm">
+       <ion-label>Eduction Details</ion-label>
+        <ion-item>
+          <ion-label position="floating">Highest Degree<ion-text color="danger">*</ion-text></ion-label>
+          <ionic-selectable
+            [items]="edu"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            searchFailText="nothing found"
+            formControlName="edu" [class.invalid]="!slideFourForm.controls.edu.valid && (slideFourForm.controls.edu.dirty || submitAttempt)"
+            >
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              Highest Degree
+            </ng-template>
+            </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Occuption<ion-text color="danger">*</ion-text></ion-label>
+          <ionic-selectable
+            #selectComponent
+            [items]="occ"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            searchFailText="nothing found"
+            formControlName="occ" [class.invalid]="!slideFourForm.controls.occ.valid && (slideFourForm.controls.occ.dirty || submitAttempt)"
+            >
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              Occupation
+            </ng-template>
+            </ionic-selectable>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Salary (Annual)</ion-label>
+          <ionic-selectable
+            #selectComponent
+            [items]="salary"
+            itemValueField="id" itemTextField="name"
+            headerColor="light"
+            [canSearch]="true"
+            searchFailText="nothing found"
+            formControlName="salary">
+
+            <ng-template ionicSelectableCloseButtonTemplate>
+              <ion-icon name="close-circle"></ion-icon>
+            </ng-template>
+            <ng-template ionicSelectableTitleTemplate>
+              salary(Annual)
+            </ng-template>
+            </ionic-selectable>
+        </ion-item>
+
+        <br>
+        <ion-button (click)="swipeBack()"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+        <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="saveEduDetails()">Save</ion-button>
+        <ion-button (click)="swipeNext()" color="light" shape="round" style="--box-shadow:none;">Next</ion-button>
+      </form>
+      </ion-slide>
+
+      <!-- Contact Details -->
+      <ion-slide>
+        <form [formGroup]="slideFiveForm">
+           <ion-label>Contact Details</ion-label>
+           <ion-item>
+            <ion-label position="floating">Person Type1</ion-label>
+            <ion-select  okText="Select" cancelText="Cancel" formControlName="persontype1" (ionChange)="onPersontype1Change($event)">
+              <ion-select-option *ngFor="let pt of personType" value="{{ pt }}">
+                {{ pt }}
+              </ion-select-option>
+            </ion-select>
+           </ion-item>
+
+           <ion-item>
+            <ion-label position="floating">Phone of Person Type1</ion-label>
+            <ion-input type="text" formControlName="p1pt1"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone of Person Type1</ion-label>
+            <ion-input type="text" formControlName="p1pt2"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Person Type2</ion-label>
+            <ion-select  okText="Select" cancelText="Cancel" formControlName="persontype2" (ionChange)="onPersontype2Change($event)">
+              <ion-select-option *ngFor="let pt of personType2" value="{{ pt }}">
+                {{ pt }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone of Person Type2</ion-label>
+            <ion-input type="text" formControlName="p2pt1"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone of Person Type2</ion-label>
+            <ion-input type="text" formControlName="p2pt2"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Person Type3</ion-label>
+            <ion-select  okText="Select" cancelText="Cancel" formControlName="persontype3">
+              <ion-select-option *ngFor="let pt of personType3" value="{{ pt }}">
+                {{ pt }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone of Person Type3</ion-label>
+            <ion-input type="text" formControlName="p3pt1"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Phone of Person Type3</ion-label>
+            <ion-input type="text" formControlName="p3pt2"></ion-input>
+          </ion-item>
+          <br>
+        <ion-button (click)="swipeBack()"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+        <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="saveContactDetails()">Save</ion-button>
+        <ion-button  (click)="swipeNext()"  color="light" shape="round" style="--box-shadow:none;">Next</ion-button>
+        </form>
+      </ion-slide>
+
+      <!-- Family details -->
+      <ion-slide>
+        <form [formGroup]="slideSixForm">
+       <ion-label>Family Details</ion-label>
+            <ion-item>
+              <ion-label position="floating">Father Name</ion-label>
+              <ion-input type="text" formControlName="fathername"></ion-input>
+            </ion-item>
+
+            <ion-item>
+             <ion-label position="floating">Father Occupation</ion-label>
+              <ionic-selectable
+                #selectComponent
+                [items]="occ"
+                itemValueField="id" itemTextField="name"
+                headerColor="light"
+                [canSearch]="true"
+                searchFailText="nothing found"
+                formControlName="fatherocc">
+
+                <ng-template ionicSelectableCloseButtonTemplate>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableTitleTemplate>
+                  Occupation
+                </ng-template>
+                </ionic-selectable>
+            </ion-item>
+
+
+           <ion-item>
+             <ion-label position="floating">Mother Name</ion-label>
+             <ion-input type="text" formControlName="mothername"></ion-input>
+           </ion-item>
+
+           <ion-item>
+             <ion-label position="floating">Mother Occupation</ion-label>
+              <ionic-selectable
+                #selectComponent
+                [items]="occ"
+                itemValueField="id" itemTextField="name"
+                headerColor="light"
+                [canSearch]="true"
+                searchFailText="nothing found"
+                formControlName="motherocc">
+
+                <ng-template ionicSelectableCloseButtonTemplate>
+                  <ion-icon name="close-circle"></ion-icon>
+                </ng-template>
+                <ng-template ionicSelectableTitleTemplate>
+                  Occupation
+                </ng-template>
+                </ionic-selectable>
+            </ion-item>
+
+           <ion-item>
+             <ion-label position="floating">Siblings</ion-label>
+             <ion-select formControlName="siblings">
+              <ion-select-option>1</ion-select-option>
+              <ion-select-option>2</ion-select-option>
+              <ion-select-option>3</ion-select-option>
+              <ion-select-option>4</ion-select-option>
+              <ion-select-option>>=5</ion-select-option>
+             </ion-select>
+           </ion-item>
+
+
+         <ion-item>
+           <ion-label position="floating">Family type</ion-label>
+           <ion-select formControlName="familytype">
+            <ion-select-option>Joint Family</ion-select-option>
+            <ion-select-option>Nuclear Family</ion-select-option>
+            <ion-select-option>Others</ion-select-option>
+           </ion-select>
+         </ion-item>
+
+       <ion-item>
+         <ion-label position="floating">Family Status</ion-label>
+         <ion-select formControlName="familystatus">
+          <ion-select-option>Lower Income</ion-select-option>
+          <ion-select-option>Middle Class</ion-select-option>
+          <ion-select-option>Upper Middle Class</ion-select-option>
+          <ion-select-option>Rich</ion-select-option>
+         </ion-select>
+       </ion-item>
+
+     <ion-item>
+       <ion-label position="floating">Family Value</ion-label>
+       <ion-select formControlName="familyvalue">
+        <ion-select-option>Liberal</ion-select-option>
+        <ion-select-option>Moderate</ion-select-option>
+        <ion-select-option>Orthodox</ion-select-option>
+        <ion-select-option>Traditional</ion-select-option>
+       </ion-select>
+     </ion-item>
+
+     <!-- <ion-item>
+      <ion-label position="floating">About Family</ion-label><br>
+       <ion-textarea></ion-textarea>
+     </ion-item> -->
+        <br>
+        <ion-button (click)="swipeBack()"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+        <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="saveFamilyDetails()">Save</ion-button>
+        <ion-button (click)="swipeNext()"  color="light" shape="round" style="--box-shadow:none;">Next</ion-button>
+        </form>
+       </ion-slide>
+
+       <!-- Other Details -->
+      <ion-slide>
+        <form [formGroup]="slideSevenForm">
+          <ion-label>Other Details</ion-label>
+          <ion-item>
+            <ion-label position="floating">Smoke</ion-label>
+            <ion-select  okText="Select" cancelText="Cancel" formControlName="smoke">
+                <ion-select-option *ngFor="let pt of smoke" value="{{ pt }}">
+                  {{ pt }}
+                </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Drink</ion-label>
+            <ion-select  okText="Select" cancelText="Cancel" formControlName="drink">
+              <ion-select-option *ngFor="let pt of drink" value="{{ pt }}">
+                {{ pt }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Diet</ion-label>
+            <ion-select  okText="Select" cancelText="Cancel" formControlName="diet">
+              <ion-select-option *ngFor="let pt of diet" value="{{ pt }}">
+                {{ pt }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <br>
+          <ion-button (click)="swipeBack()"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+          <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="saveOtherDetails()">Save</ion-button>
+          <ion-button  (click)="swipeNext()"  color="light" shape="round" style="--box-shadow:none;">Next</ion-button>
+        </form>
+      </ion-slide>
+
+      <!-- About Preferred partner -->
+      <ion-slide>
+        <form [formGroup]="slideEightForm">
+          <ion-label>About Prefered Partner</ion-label>
+            <ion-item>
+              <ion-label position="floating">Age from</ion-label><br>
+             <ion-range min="20" max="60" color="secondary" pin="true" formControlName="agefrom">
+               <ion-label slot="start">20</ion-label>
+               <ion-label slot="end">60</ion-label>
+             </ion-range>
+
+            </ion-item>
+            <ion-item>
+             <ion-label position="floating">Age To</ion-label><br>
+            <ion-range min="20" max="60" color="secondary" pin="true" formControlName="ageto">
+              <ion-label slot="start">20</ion-label>
+              <ion-label slot="end">60</ion-label>
+            </ion-range>
+           </ion-item>
+
+
+           <ion-item>
+            <ion-label position="floating">Height</ion-label>
+            <ionic-selectable
+              #selectComponent
+              [items]="heightRange"
+              itemValueField="id" itemTextField="name"
+              headerColor="light"
+              [canSearch]="true"
+              (onChange)="portChange($event)"
+              searchFailText="nothing found"
+              formControlName="height">
+
+              <ng-template ionicSelectableCloseButtonTemplate>
+                <ion-icon name="close-circle"></ion-icon>
+              </ng-template>
+              <ng-template ionicSelectableTitleTemplate>
+                Height
+              </ng-template>
+              </ionic-selectable>
+            </ion-item>
+
+           <ion-item>
+             <ion-label position="floating">Mother Tongue</ion-label>
+             <ionic-selectable
+              #selectComponent
+              [items]="mt"
+              itemValueField="id" itemTextField="name"
+              headerColor="light"
+              [canSearch]="true"
+              searchFailText="nothing found"
+              formControlName="mt">
+
+              <ng-template ionicSelectableCloseButtonTemplate>
+                <ion-icon name="close-circle"></ion-icon>
+              </ng-template>
+              <ng-template ionicSelectableTitleTemplate>
+                Mother Tongue
+              </ng-template>
+              </ionic-selectable>
+            </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Caste</ion-label>
+                <ionic-selectable
+                  [items]="caste"
+                  itemValueField="id" itemTextField="name"
+                  headerColor="light"
+                  [canSearch]="true"
+                  searchFailText="nothing found"
+                  formControlName="caste"
+                  >
+
+                  <ng-template ionicSelectableCloseButtonTemplate>
+                    <ion-icon name="close-circle"></ion-icon>
+                  </ng-template>
+                  <ng-template ionicSelectableTitleTemplate>
+                    Caste
+                  </ng-template>
+
+                  </ionic-selectable>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Sub-Caste</ion-label>
+                <ionic-selectable
+                  [items]="subcaste"
+                  itemValueField="id" itemTextField="name"
+                  headerColor="light"
+                  [canSearch]="true"
+                  searchFailText="nothing found"
+                  formControlName="subcaste"
+                  >
+
+                  <ng-template ionicSelectableCloseButtonTemplate>
+                    <ion-icon name="close-circle"></ion-icon>
+                  </ng-template>
+                  <ng-template ionicSelectableTitleTemplate>
+                    Sub-Caste
+                  </ng-template>
+
+                  </ionic-selectable>
+              </ion-item>
+
+           <ion-item>
+            <ion-label position="floating">Highest Degree</ion-label>
+            <ionic-selectable
+              #selectComponent
+              [items]="edu"
+              itemValueField="id" itemTextField="name"
+              headerColor="light"
+              [canSearch]="true"
+              searchFailText="nothing found"
+              formControlName="edu">
+
+              <ng-template ionicSelectableCloseButtonTemplate>
+                <ion-icon name="close-circle"></ion-icon>
+              </ng-template>
+              <ng-template ionicSelectableTitleTemplate>
+                Highest Degree
+              </ng-template>
+              </ionic-selectable>
+           </ion-item>
+
+           <ion-item>
+            <ion-label position="floating">Occuption</ion-label>
+            <ionic-selectable
+              #selectComponent
+              [items]="occ"
+              itemValueField="id" itemTextField="name"
+              headerColor="light"
+              [canSearch]="true"
+              searchFailText="nothing found"
+              formControlName="occ">
+
+              <ng-template ionicSelectableCloseButtonTemplate>
+                <ion-icon name="close-circle"></ion-icon>
+              </ng-template>
+              <ng-template ionicSelectableTitleTemplate>
+                Occupation
+              </ng-template>
+              </ionic-selectable>
+
+           </ion-item>
+
+
+           <ion-item>
+            <ion-label position="floating">Salary(Annual)</ion-label>
+            <ionic-selectable
+              #selectComponent
+              [items]="salary"
+              itemValueField="id" itemTextField="name"
+              headerColor="light"
+              [canSearch]="true"
+              searchFailText="nothing found"
+              formControlName="salary">
+
+              <ng-template ionicSelectableCloseButtonTemplate>
+                <ion-icon name="close-circle"></ion-icon>
+              </ng-template>
+              <ng-template ionicSelectableTitleTemplate>
+                salary(Annual)
+              </ng-template>
+              </ionic-selectable>
+           </ion-item>
+
+        <br>
+        <ion-button (click)="swipeBack()"  color="light" shape="round" style="--box-shadow:none;">Back</ion-button>
+        <ion-button type="submit"  color="light" shape="round" style="--box-shadow:none;" (click)="savePartnerDetails()">Save</ion-button>
+       </form>
+      </ion-slide>
+
+
+
+    </ion-slides>
+  </ion-content>
+</ion-app>
+

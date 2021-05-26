@@ -1,0 +1,7 @@
+{
+  "host":"localhost",
+  "user":"root",
+  "database":"matrimony",
+  "password":"1234567",
+  "dialect": "mysql"
+}

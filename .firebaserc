@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "matrimonyapp-a6dd2": {
+      "hosting": {
+        "app": [
+          "matrimonyapp-a6dd2"
+        ]
+      }
+    }
+  }
+}

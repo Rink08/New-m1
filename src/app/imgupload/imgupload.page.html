@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>imgupload</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form enctype="multipart/form-data">
+    <!-- <ion-item>
+      <ion-label position="floating">UID</ion-label>
+      <ion-input type="text" [(ngModel)]="useruid" name="useruid"></ion-input>
+    </ion-item> -->
+
+    <ion-item>
+      <ion-label>Profile Photo</ion-label>
+      <ion-button color="light" shape="round" style="--box-shadow:none;" (click)="selectImage()">Choose Images</ion-button>
+    </ion-item>
+    <br>
+      <!-- <ion-item>
+       <input type="file" (change)="onFileChange($event)" name="image"/>
+
+    </ion-item>
+    <ion-item>
+     <button ion-button color="secondary" (click)="getImage1()">Get Image</button>
+   </ion-item>
+    <ion-item>
+      <ion-button expand="full" (click)="upload()">Upload</ion-button>
+    </ion-item>
+    <ion-item >
+      <ion-label>'./../../../backend/uploads/{{i.image_name}}'</ion-label><br>
+      <img [src]="img_name" width="200px">
+    </ion-item> -->
+    <ion-label>{{img_name}}</ion-label>
+
+  </form>
+
+</ion-content>
+
+<!--
+<ion-content>
+  <ion-row>
+    <ion-col
+      size="6"
+      *ngFor="let img of images; let i = index;"
+      class="ion-text-center"
+    >
+      <ion-label>
+        {{ img.name }}
+        <p>{{ img.createdAt | date:'short' }}</p>
+      </ion-label>
+
+      <img [src]="img.url" />
+      <ion-fab vertical="bottom" horizontal="end">
+        <ion-fab-button
+          color="danger"
+          size="small"
+          (click)="deleteImage(img, i)"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </ion-col>
+  </ion-row>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <input
+      type="file"
+      #fileInput
+      (change)="uploadFile($event)"
+      hidden="true"
+      accept="image/*"
+    />
+    <ion-fab-button (click)="selectImageSource()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> -->
+
+<!-- <ion-content padding>
+  <ion-item>
+     <p>{{imageURI}}</p>
+    <button ion-button color="secondary" (click)="getImage()">Get Image</button>
+  </ion-item>
+  <ion-item>
+    <h4>Image Preview</h4>
+    <img src="{{imageFileName}}" *ngIf="imageFileName" alt="Ionic File" width="300" />
+  </ion-item>
+  <ion-item>
+    <button ion-button (click)="uploadFile()">Upload</button>
+  </ion-item>
+</ion-content> -->
