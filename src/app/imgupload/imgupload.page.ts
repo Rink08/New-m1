@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-for-of */
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable no-trailing-spaces */
@@ -10,16 +11,14 @@
 import { Component, OnInit,ElementRef, ViewChild  } from '@angular/core';
 import { AuthService,ApiImage } from './../services/auth.service';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
-import { Platform, ActionSheetController,ModalController,NavController, LoadingController, ToastController } from '@ionic/angular';
+import { Platform, ActionSheetController,AlertController ,ModalController,NavController, LoadingController, ToastController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { read } from 'node:fs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ImagePicker } from '@ionic-native/image-picker/ngx';
-
-// import { UploadModalPage } from '../upload-modal/upload-modal.page';
-// import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-//import { File } from '@ionic-native/file/ngx';
-
+import { Router } from '@angular/router';
+import { SigninPage } from '../signin/signin.page';
+import { SignupPage } from '../signup/signup.page';
 
 
 @Component({
@@ -28,31 +27,23 @@ import { ImagePicker } from '@ionic-native/image-picker/ngx';
   styleUrls: ['./imgupload.page.scss'],
 })
 export class ImguploadPage implements OnInit {
-  //images: ApiImage[] = [];
-  @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
-  useruid='';
-  public image1: File;
-  type = '';
-  fileBlob;
-  images: any = [];
-  imageURI: any;
-imageFileName: any;
+  public static userImg = '';
 
-userImg: any = '';
-base64Img = '';
-img_name;
- base64String = '';
+  img_name;
+  image = [];
+  Error;
+  uid='';
+  signup=SigninPage.siginUid;
+  signin=SignupPage.signUpUid;
+  count = 0;
 
- croppedImagepath = "";
-  isLoading = false;
-
-  imagePickerOptions = {
-    maximumImagesCount: 1,
-    quality: 50
-  };
 
   constructor(private api: AuthService,
     private imagePicker: ImagePicker,
+    public router: Router,
+    private alertCtrl: AlertController,
+    //private filepath: FilePath,
+    //private base64: Base64,
     //private modalCtrl: ModalController ,
   //   private file: File,
   //   private plt: Platform,
@@ -68,7 +59,20 @@ img_name;
   }
 
   ngOnInit() {
+    if(this.signin===''){
+      this.uid = this.signup;
+    }
+    else{
+      this.uid = this.signin;
+    }
+
     this.getImage();
+
+    this.api.imageCount(this.uid).subscribe((msg)=>{
+      //console.log('count',msg);
+      this.count = msg[0][0]["count(?)"];
+      //console.log(this.count);
+    });
   }
 
   pickImage(sourceType) {
@@ -80,67 +84,90 @@ img_name;
       mediaType: this.camera.MediaType.PICTURE
     };
     this.camera.getPicture(options).then(async (imageData) => {
-      console.log('get',imageData);
-      //let base64Image = 'data:image/jpeg;base64,' + imageData;
-      const base64Response = await fetch('data:image/jpeg;base64,'+ imageData);
-        const blob = await base64Response.blob();
+      //console.log('get',imageData);
+       //let base64Image = 'data:image/jpeg;base64,' + imageData;
+      //const base64Response = await fetch('data:image/jpeg;base64,'+ imageData);
+        //const blob = await base64Response.blob();
         // let base64String = await this.convertBlobToBase64(blob);
         // console.log('base64',base64String);
        //console.log('image data =>  ', blob);
-       console.log('uploading file');
-       this.api.insertimageblob({img:blob}).subscribe((msg)=>{
+       //console.log('uploading file');
+
+       this.api.insertimageblob({uid:this.uid,img:imageData}).subscribe((msg)=>{
         console.log('msg',msg);
+        this.image = [];
+        this.getImage();
       });
+
     }, (err) => {
       console.log(err);
     });
+
   }
 
   async selectImage() {
-    const actionSheet = await this.actionSheetCtrl.create({
-      header: "Select Image source",
-      buttons: [{
-        text: 'Load from Library',
-        handler: () => {
-          this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY);
-        }
-      },
-      {
-        text: 'Use Camera',
-        handler: () => {
-          this.pickImage(this.camera.PictureSourceType.CAMERA);
-        }
-      },
-      {
-        text: 'Cancel',
-        role: 'cancel'
+    if(this.count===10){
+      let alert = await this.alertCtrl.create({
+        message: 'You can upload only 10 Photos',
+        buttons: ['OK']
+      });
+       alert.present();
+
+    }
+    else{
+        const actionSheet = await this.actionSheetCtrl.create({
+          header: "Select Image source",
+          buttons: [{
+            text: 'Load from Library',
+            handler: () => {
+              this.pickImage(this.camera.PictureSourceType.PHOTOLIBRARY);
+            }
+          },
+          {
+            text: 'Use Camera',
+            handler: () => {
+              this.pickImage(this.camera.PictureSourceType.CAMERA);
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel'
+          }
+          ]
+        });
+        await actionSheet.present();
       }
-      ]
-    });
-    await actionSheet.present();
   }
 
-  convertBlobToBase64 = (blob) => new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-        console.log(reader.result);
-    };
+  // convertBlobToBase64 = (blob) => new Promise((resolve, reject) => {
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(blob);
+  //   reader.onloadend = () => {
+  //       console.log(reader.result);
+  //   };
 //reader.readAsText(blob);
     //reader.readAsDataURL(blob);
 
-});
+//});
   getImage(){
     let base64String;
 
-     this.api.getImages().subscribe(async (msg)=>{
-       console.log('msg1',msg);
-       //let blob1 = new Blob([new Uint8Array(msg)]);
+     this.api.getImages(this.uid).subscribe(async (msg)=>{
+       //console.log('msg1',msg);
+       // this.Error = msg.body[0].length;
+        this.img_name = msg.body;
+        this.Error = this.img_name.length;
+       for(let i=0;i<this.img_name.length;i++){
+        this.img_name[i].image = 'data:image/jpeg;base64,'+this.img_name[i].image;
+         this.image.push(this.img_name[i]);
+       }
+       //console.log(this.image);
+      //  let blob1 = new Blob([new Uint8Array(msg[0].data.data)]);
       // console.log('b',blob1);
       // const imageUrl = URL.createObjectURL(blob1);
       // console.log(imageUrl);
       // this.img_name = imageUrl;
-     //base64String = await this.convertBlobToBase64(msg.body);
+   //base64String = await this.convertBlobToBase64(msg[0]);
       // const reader = new FileReader();
       // reader.readAsDataURL(blob1);
       // reader.onloadend = () => {
@@ -148,12 +175,35 @@ img_name;
       //     };
       //console.log('base',base64String);
       //this.img_name = base64String;
-      //this.img_name = 'data:image/jpeg;base64,'+ msg[1][0]._buf.data;
+      //this.img_name = 'data:image/jpeg;base64,'+ msg.body;
       // console.log(this.img_name);
 
      });
 
   }
+
+  deleteImage(id){
+    //console.log(id);
+    this.api.deleteImage(id).subscribe((msg)=>{
+      //console.log(msg);
+      this.image = [];
+      this.getImage();
+    });
+  }
+
+  setProfile(id){
+    //console.log(id);
+    ImguploadPage.userImg = id;
+    for(let i=0;i<this.image.length;i++){
+      if(this.image[i].id === id){
+        this.api.updateSetProfile({uid:this.uid,setProfile:id}).subscribe((msg)=>{
+           console.log(msg);
+        });
+      }
+    }
+    this.router.navigate(['main']);
+  }
+
 //all good from
   // getImage1() {
   //   const options: CameraOptions = {

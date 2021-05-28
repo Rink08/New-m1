@@ -118,9 +118,14 @@ router.get('/getchatrequest/:uid',authController.getchatrequest);
 //router.get('/image',authController.uploadImageFile);
 
 
-router.post('/upload',authController.upload);
-router.get('/image',authController.image);
+//router.post('/upload',authController.upload);
+router.get('/image/:uid',authController.image);
 router.post('/uploadblob',authController.uploadblob);
+router.delete('/deleteImage/:id',authController.deleteImage);
+router.put('/updateSetProfile',authController.updateSetProfile);
+router.get('/imageCount/:uid',authController.imageCount);
+router.get('/getProfilePhoto/:uid/:id',authController.getProfilePhoto);
+router.get('/getSetProfileId/:uid',authController.getSetProfileId);
 
 // const uploads = require('./../config/upload.config');
 // const fileWorker = require('./../controllers/first');

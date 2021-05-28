@@ -307,24 +307,40 @@ httpOptionsFile: {headers: HttpHeaders}={
   // }
 
 
-  insertimage(user)
-  {
-    console.log('auth',user);
-    return this.http.post('http://localhost:5000/auth/upload',user,this.httpOptionsFile);
+  // insertimage(user)
+  // {
+  //   console.log('auth',user);
+  //   return this.http.post('http://localhost:5000/auth/upload',user,this.httpOptionsFile);
 
-  }
+  // }
 
-  insertimageblob(user)
-  {
-    console.log('auth',user);
+  insertimageblob(user){
     return this.http.post('http://localhost:5000/auth/uploadblob',user,this.httpOptionsFile);
-
   }
 
-  getImages() {
+  getImages(uid) {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    return this.http.get('http://localhost:5000/auth/image',{responseType: "blob",observe:"response"});
-    //return this.http.get<ApiImage[]>(`${this.url3}/image`,this.httpOptions);
+    return this.http.get(`http://localhost:5000/auth/image/${uid}`,{responseType: "json",observe:"response"});
+  }
+
+  deleteImage(id){
+    return this.http.delete(`http://localhost:5000/auth/deleteImage/${id}`,this.httpOptions);
+  }
+
+  updateSetProfile(user){
+    return this.http.put('http://localhost:5000/auth/updateSetProfile',user,this.httpOptions);
+  }
+
+  imageCount(uid){
+    return this.http.get(`http://localhost:5000/auth/imageCount/${uid}`,this.httpOptions);
+  }
+
+  getProfilePhoto(uid,id){
+    return this.http.get(`http://localhost:5000/auth/getProfilePhoto/${uid}/${id}`,{responseType: "json",observe:"response"});
+  }
+
+  getSetProfileId(uid){
+    return this.http.get(`http://localhost:5000/auth/getSetProfileId/${uid}`,this.httpOptions);
   }
 
   // uploadImage(blobData, name, ext) {

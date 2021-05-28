@@ -383,25 +383,61 @@ static onelike(from){
       }
 
 
-      static insertimage(user){
-        return db.execute(
-            'INSERT INTO imageup(uid,image_name) VALUES(?,?)',
-            [user.uid,user.image_name]
-        );
+    //   static insertimage(user){
+    //     return db.execute(
+    //         'INSERT INTO imageup(uid,image_name) VALUES(?,?)',
+    //         [user.uid,user.image_name]
+    //     );
+    // }
+
+    static image(uid){
+      return db.execute(
+          'SELECT * FROM images where uid=?',[uid]
+      );
     }
 
-    static image(user){
+    static deleteImage(id){
       return db.execute(
-          'SELECT data FROM images'
+          'delete FROM images where imgId=?',[id]
       );
-  }
+    }
+
+    static imageCount(uid){
+      return db.execute(
+          'select count(?) FROM images',[uid]
+      );
+    }
+
 
   static uploadblob(user){
     return db.execute(
-        'INSERT INTO images(data) VALUES(?)',
-        [user.img]
+        'INSERT INTO images VALUES(?,?,?)',
+        [user.img,user.uid,0]
     );
-}
+  }
 
+  static insertSetP(user){
+    return db.execute(
+      'insert into setProfile values(?,?)',[user.uid,null]
+    )
+  }
+
+  static getSetProfileId(uid){
+    return db.execute(
+      'select setProfile from setProfile where uid=?',[uid]
+    )
+  }
+
+  static updateSetProfile(user){
+    return db.execute(
+      'update setProfile set setProfile=? where uid=?',[user.setProfile,user.uid]
+    )
+  }
+
+  static getProfilePhoto(uid,id){
+      return db.execute(
+        'select data from images where uid=? and imgId=?',[uid,id]
+      )
+  }
 
 }

@@ -6,6 +6,7 @@ const User=require('../models/user');
 
 
 
+
 exports.signup = async(req,res,next)=>{
   const errors=validationResult(req);
   console.log(errors);
@@ -119,7 +120,7 @@ exports.signup = async(req,res,next)=>{
     const r6 = await User.saveother(userother);
     const r7 = await User.savepartner(userpartner);
 
-
+    const u = await User.insertSetP({uid: uid})
 
     // console.log(result);
 
@@ -766,55 +767,69 @@ exports.getchatrequest=async(req,res,next)=>{
 //     console.log(req.body);
 // };
 
-var multer  = require('multer');
-var fileUpload= require('./../middleware/upload');
+// var multer  = require('multer');
+// var fileUpload= require('./../middleware/upload');
 //console.log(fileUpload);
 
-exports.upload=async(req,res,next)=>{
-  //console.log(req.body);
-  try{
-        var upload = multer({
-                    storage: fileUpload.files.storage(),
-                    allowedFile:fileUpload.files.allowedFile
-                    }).single('photo');
-                    //console.log(req.body.photo);
-        upload(req, res, function (err) {
-          //console.log(req.body);
-           if (err instanceof multer.MulterError) {
-              res.send(err);
-           } else if (err) {
-              res.send(err);
-           }else{
-            const uid = req.body.uid;
-             const name = req.file;
-             const name1 = name.filename;
+// exports.upload=async(req,res,next)=>{
+//   //console.log(req.body);
+//   try{
+//         var upload = multer({
+//                     storage: fileUpload.files.storage(),
+//                     allowedFile:fileUpload.files.allowedFile
+//                     }).single('photo');
+//                     //console.log(req.body.photo);
+//         upload(req, res, function (err) {
+//           //console.log(req.body);
+//            if (err instanceof multer.MulterError) {
+//               res.send(err);
+//            } else if (err) {
+//               res.send(err);
+//            }else{
+//             const uid = req.body.uid;
+//              const name = req.file;
+//              const name1 = name.filename;
 
-             const obj = {
-               uid: uid,
-               image_name: name1
-             }
-            //console.log(obj);
-            const result= User.insertimage(obj);
-             res.status(200).json(result);
-              //res.render('upload-form');
-              //console.log(req.file);
-              //res.json({ fileUrl: 'http://localhost:5000/auth/images/' + req.file.filename });
-           }
+//              const obj = {
+//                uid: uid,
+//                image_name: name1
+//              }
+//             //console.log(obj);
+//             const result= User.insertimage(obj);
+//              res.status(200).json(result);
+//               //res.render('upload-form');
+//               //console.log(req.file);
+//               //res.json({ fileUrl: 'http://localhost:5000/auth/images/' + req.file.filename });
+//            }
 
-        })
-      }
-      catch(err){
-         console.log('err',err);
-      }
-}
+//         })
+//       }
+//       catch(err){
+//          console.log('err',err);
+//       }
+// }
 
 exports.image=async(req,res,next)=>{
-  //console.log("uid "+uid);
+  const uid=req.params.uid;
   try{
-    const user=await User.image();
-    console.log(user);
+    let imgdata = [];
+    const user=await User.image(uid);
+    //console.log(user[0]);
+    for(let i=0;i<user[0].length;i++){
+      const c = Buffer.from(user[0][i]['data'],"utf8")
+      const bb = c.toString("utf8");
+      imgdata.push({id:user[0][i]['imgId'],image:bb});
+    }
+    // const buff2 = Buffer.from(user,"base64");
+    //const base64D =buff2.toString("utf8");
+    //const b = Buffer.from(user[0],"base64");
+    //const bb = b.toString("base64");
+    // const c = Buffer.from(user[0][0]['data'],"utf8")
+    // const bb = c.toString("utf8");
 
-    res.send(user);
+    //console.log(imgdata);
+
+    res.json(imgdata);
   }
   catch(err){
    console.log(err.message);
@@ -822,12 +837,22 @@ exports.image=async(req,res,next)=>{
 };
 
 exports.uploadblob=async(req,res,next)=>{
-  const basic = {
-   img: req.body.img,
-  }
+
   try{
+    //console.log(req.body.img);
+    const buff = Buffer.from(req.body.img,"utf8");
+    //const base64 = buff.toString("base64");
+    //console.log(base64);
+    //const buff2 = Buffer.from(base64,"base64");
+   // const base64D = buff2.toString("utf8");
+    console.log(buff);
+    const basic = {
+      img: buff,
+      uid: req.body.uid
+     }
       const user=await User.uploadblob(basic);
-      console.log(user);
+
+      //console.log(basic);
       res.status(200).json({meessage:'inserted'});
 
 
@@ -835,3 +860,61 @@ exports.uploadblob=async(req,res,next)=>{
       console.log(err);
   }
 };
+
+exports.deleteImage = async(req,res,next) => {
+  const id=req.params.id;
+  try{
+      const userinfo=await User.deleteImage(id);
+      res.status(200).json({message:'id delete'});
+  }catch(err){
+    console.log(err.message);
+  }
+}
+
+exports.updateSetProfile = async(req,res,next) => {
+  const user={
+    uid: req.body.uid,
+    setProfile: req.body.setProfile,
+  }
+  try{
+    const userinfo=await User.updateSetProfile(user);
+    res.status(200).json({message:'updated'});
+  }catch(err){
+    console.log(err.message);
+  }
+}
+
+exports.imageCount = async(req,res,next) => {
+  const uid=req.params.uid;
+  try{
+      const count=await User.imageCount(uid);
+      res.status(200).json(count);
+  }catch(err){
+    console.log(err.message);
+  }
+}
+
+exports.getProfilePhoto = async(req,res,next) => {
+  const uid = req.params.uid;
+  const id = req.params.id;
+  try{
+    const img=await User.getProfilePhoto(uid,id);
+    //console.log(img);
+      const c = Buffer.from(img[0][0]['data'],"utf8")
+      const bb = c.toString("utf8");
+      res.status(200).json({message:bb});
+
+  }catch(err){
+    console.log(err.message);
+  }
+}
+
+exports.getSetProfileId = async(req,res,next) => {
+  const uid=req.params.uid;
+  try{
+      const id=await User.getSetProfileId(uid);
+      res.status(200).json(id);
+  }catch(err){
+    console.log(err.message);
+  }
+}

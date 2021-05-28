@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'imgupload',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   {
@@ -42,7 +42,8 @@ const routes: Routes = [
   {
     path: 'imgupload',
     loadChildren: () => import('./imgupload/imgupload.module').then( m => m.ImguploadPageModule)
-  },  {
+  },
+  {
     path: 'upload-modal',
     loadChildren: () => import('./upload-modal/upload-modal.module').then( m => m.UploadModalPageModule)
   },
