@@ -11,7 +11,6 @@ import { Platform } from '@ionic/angular';
 import { Plugins,CameraResultType,CameraSource } from '@capacitor/core';
 import { createWorker } from 'tesseract.js';
 import { AuthService } from './../services/auth.service';
-import { ChatserviceService } from './../Chatservice.service';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Camera }=Plugins;
@@ -61,8 +60,7 @@ export class SignupPage implements OnInit {
   workerReady=false;
 
   constructor(private imagePicker: ImagePicker,private router: Router,public loadingController: LoadingController,
-    public formBuilder: FormBuilder,public alertCtrl: AlertController,private country: CountriesService,private authService: AuthService,
-    private chatService: ChatserviceService) {
+    public formBuilder: FormBuilder,public alertCtrl: AlertController,private country: CountriesService,private authService: AuthService) {
       this.slideTwoForm = this.formBuilder.group({
         firstName: ['', Validators.compose([Validators.minLength(3), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
         // eslint-disable-next-line max-len
@@ -92,7 +90,7 @@ export class SignupPage implements OnInit {
         edu:['',Validators.required],
         occ:['',Validators.required]
       });
-      this.loadWorker();
+      //this.loadWorker();
    }
 
 
@@ -131,7 +129,7 @@ export class SignupPage implements OnInit {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       for(let i=0;i<msg[0].length;i++){
         this.heightRange.push({id:i,name:msg[0][i].height});
-        this.height_to_num[msg[0][i-1].height] = msg[0][i-1].height_in_num;
+        this.height_to_num[msg[0][i].height] = msg[0][i].height_in_num;
       }
     });
 
@@ -192,41 +190,6 @@ export class SignupPage implements OnInit {
     //console.log(this.cities);
   }
 
-  getImages() {
-    this.options = {
-      // Android only. Max images to be selected, defaults to 15. If this is set to 1, upon
-      // selection of a single image, the plugin will return it.
-      //maximumImagesCount: 3,
-
-      // max width and height to allow the images to be.  Will keep aspect
-      // ratio no matter what.  So if both are 800, the returned image
-      // will be at most 800 pixels wide and 800 pixels tall.  If the width is
-      // 800 and height 0 the image will be 800 pixels wide if the source
-      // is at least that wide.
-      width: 200,
-      //height: 200,
-
-      // quality of resized image, defaults to 100
-      quality: 25,
-
-      // output type, defaults to FILE_URIs.
-      // available options are
-      // window.imagePicker.OutputType.FILE_URI (0) or
-      // window.imagePicker.OutputType.BASE64_STRING (1)
-      outputType: 1
-    };
-    this.imageResponse = [];
-    this.imagePicker.getPictures(this.options).then((results) => {
-      // eslint-disable-next-line @typescript-eslint/prefer-for-of
-      for(let i = 0; i < results.length; i++) {
-        this.imageResponse.push('data:image/jpeg;base64,' + results[i]);
-      }
-    }, (err) => {
-      alert(err);
-    });
-  }
-
-
   async swipeNext(){
     if(this.image === '')
     {
@@ -247,94 +210,94 @@ export class SignupPage implements OnInit {
   }
 
   async slidetwoform(){
-    this.useruid=this.slideTwoForm.get('aadhar').value;
-    this.username=this.slideTwoForm.get('firstName').value;
-    this.usergender=this.slideTwoForm.get('gender').value;
-    this.userdate=this.slideTwoForm.get('date').value;
+  //   this.useruid=this.slideTwoForm.get('aadhar').value;
+  //   this.username=this.slideTwoForm.get('firstName').value;
+  //   this.usergender=this.slideTwoForm.get('gender').value;
+  //   this.userdate=this.slideTwoForm.get('date').value;
 
-    const result=await this.worker.recognize(this.image);
+  //   const result=await this.worker.recognize(this.image);
 
-    this.ocrResult=result.data.text;
-    this.ocr=result.data.text;
-    while(this.i<this.ocr.length)
-    {
-      if(this.ocr.charAt(this.i)==='\n')
-      {
-        if(this.ocr1!=='' && this.ocr1!=='\n')
-        {
-        this.str[this.j]=this.ocr1;
-        this.j=this.j+1;
-        }
-        this.ocr1='';
-      }
-      else
-      {
-        this.ocr1=this.ocr1+this.ocr.charAt(this.i);
-      }
-      this.i=this.i+1;
+  //   this.ocrResult=result.data.text;
+  //   this.ocr=result.data.text;
+  //   while(this.i<this.ocr.length)
+  //   {
+  //     if(this.ocr.charAt(this.i)==='\n')
+  //     {
+  //       if(this.ocr1!=='' && this.ocr1!=='\n')
+  //       {
+  //       this.str[this.j]=this.ocr1;
+  //       this.j=this.j+1;
+  //       }
+  //       this.ocr1='';
+  //     }
+  //     else
+  //     {
+  //       this.ocr1=this.ocr1+this.ocr.charAt(this.i);
+  //     }
+  //     this.i=this.i+1;
 
-    }
-    while(this.k<this.str.length)
-    {
-      console.log('line ',this.k,' ',this.str[this.k]);
-      this.opresult=this.opresult+this.str[this.k]+'\n';
-      this.k=this.k+1;
+  //   }
+  //   while(this.k<this.str.length)
+  //   {
+  //     console.log('line ',this.k,' ',this.str[this.k]);
+  //     this.opresult=this.opresult+this.str[this.k]+'\n';
+  //     this.k=this.k+1;
 
-    }
+  //   }
 
-    this.gen=this.usergender.toUpperCase();
-    this.name=this.username.split(' ');
+  //   this.gen=this.usergender.toUpperCase();
+  //   this.name=this.username.split(' ');
 
-    if(this.usergender==='Male')
-    {
-      if((this.opresult.includes('Female')||this.opresult.includes('FEMALE')))
-      {
-        this.isgender=false;
-      }
-    }
+  //   if(this.usergender==='Male')
+  //   {
+  //     if((this.opresult.includes('Female')||this.opresult.includes('FEMALE')))
+  //     {
+  //       this.isgender=false;
+  //     }
+  //   }
 
-    console.log('gender '+this.isgender);
-    for(this.p=0;this.p<this.name.length;this.p=this.p+1)
-    {
-      this.txt=this.name[this.p].charAt(0).toUpperCase() +this.name[this.p].substr(1).toLowerCase();
-      if((!this.opresult.includes(this.txt))&& (this.name[this.p]!==' '))
-      {
+  //   console.log('gender '+this.isgender);
+  //   for(this.p=0;this.p<this.name.length;this.p=this.p+1)
+  //   {
+  //     this.txt=this.name[this.p].charAt(0).toUpperCase() +this.name[this.p].substr(1).toLowerCase();
+  //     if((!this.opresult.includes(this.txt))&& (this.name[this.p]!==' '))
+  //     {
 
-        this.hasname=false;
-        console.log(this.name[this.p]);
-        break;
-      }
+  //       this.hasname=false;
+  //       console.log(this.name[this.p]);
+  //       break;
+  //     }
 
-    }
+  //   }
 
-    this.date=this.userdate.substring(8,10)+'/'+this.userdate.substring(5,7)+'/'+this.userdate.substring(0,4);
-    this.date1=this.userdate.substring(0,4);
-    console.log('my details : '+this.useruid+' '+this.username+' '+ this.usergender+' '+this.userdate+' '+this.date);
-    if(!this.slideTwoForm.valid)
-    {
-      const alert = await this.alertCtrl.create({
-        message: 'Please enter all details',
-        buttons: ['OK']
-      });
-      await alert.present();
+  //   this.date=this.userdate.substring(8,10)+'/'+this.userdate.substring(5,7)+'/'+this.userdate.substring(0,4);
+  //   this.date1=this.userdate.substring(0,4);
+  //   console.log('my details : '+this.useruid+' '+this.username+' '+ this.usergender+' '+this.userdate+' '+this.date);
+  //   if(!this.slideTwoForm.valid)
+  //   {
+  //     const alert = await this.alertCtrl.create({
+  //       message: 'Please enter all details',
+  //       buttons: ['OK']
+  //     });
+  //     await alert.present();
 
-    }
+  //   }
 
-   else if(this.hasname && (this.opresult.includes(this.useruid) && this.useruid.length===14) &&
-     ( this.isgender && (((this.opresult).includes(this.usergender)) || ((this.opresult).includes(this.gen))) )&&
-     ((this.opresult.includes('Birth') && this.opresult.includes(this.date1) ) ||
-      (this.opresult.includes('DOB') && this.opresult.includes(this.date))))
-    {
+  //  else if(this.hasname && (this.opresult.includes(this.useruid) && this.useruid.length===14) &&
+  //    ( this.isgender && (((this.opresult).includes(this.usergender)) || ((this.opresult).includes(this.gen))) )&&
+  //    ((this.opresult.includes('Birth') && this.opresult.includes(this.date1) ) ||
+  //     (this.opresult.includes('DOB') && this.opresult.includes(this.date))))
+  //   {
 
       this.slides.slideNext();
-    }
-    else{
-      const alert = await this.alertCtrl.create({
-        message: 'enter details as per Aadhar',
-        buttons: ['OK']
-      });
-      await alert.present();
-    }
+    // }
+    // else{
+    //   const alert = await this.alertCtrl.create({
+    //     message: 'enter details as per Aadhar',
+    //     buttons: ['OK']
+    //   });
+    //   await alert.present();
+    // }
 
 
   }
@@ -376,39 +339,39 @@ export class SignupPage implements OnInit {
 
 
 
-  async loadWorker(){
-    this.worker = createWorker({
-      logger: progress =>{
-        console.log(progress);
+  // async loadWorker(){
+  //   this.worker = createWorker({
+  //     logger: progress =>{
+  //       console.log(progress);
 
-      }
-    });
+  //     }
+  //   });
 
-    await this.worker.load();
-    await this.worker.loadLanguage('eng');
+  //   await this.worker.load();
+  //   await this.worker.loadLanguage('eng');
 
-    await this.worker.initialize('eng');
+  //   await this.worker.initialize('eng');
 
-     this.workerReady=true;
-  }
-
-
-
-  async captureImage() {
-
-    const image=await Camera.getPhoto({
-      quality:90,
-      allowEditing:true,
-      resultType:CameraResultType.DataUrl,
-      source:CameraSource.Camera
-
-    });
-    this.uploaded=true;
-    console.log('image ',image);
-    this.image=image.dataUrl;
+  //    this.workerReady=true;
+  // }
 
 
-  }
+
+  // async captureImage() {
+
+  //   const image=await Camera.getPhoto({
+  //     quality:90,
+  //     allowEditing:true,
+  //     resultType:CameraResultType.DataUrl,
+  //     source:CameraSource.Camera
+
+  //   });
+  //   this.uploaded=true;
+  //   console.log('image ',image);
+  //   this.image=image.dataUrl;
+
+
+  // }
 
   async usersignup(): Promise<void>{
     const country1=this.slideTwoForm.get('country').value;
@@ -452,31 +415,11 @@ export class SignupPage implements OnInit {
       occupation:occ1.name
 
     };
-    const user1 = {
-      email:this.slideTwoForm.get('email').value,
-      password:this.slideTwoForm.get('password').value,
-    };
     //console.log(this.userdetails);
     this.authService.signup(this.userdetails)
     .subscribe(async (msg)=>{
       if(msg)
       {
-        this.chatService.signup(user1).then(
-         (user) => {
-           console.log(user);
-          //loading.dismiss();
-          //this.router.navigateByUrl('/chat', { replaceUrl: true });
-         },
-        async (err) => {
-          //loading.dismiss();
-          const alert = await this.alertCtrl.create({
-            header: 'Sign up failed',
-            message: err.message,
-            buttons: ['OK'],
-          });
-          await alert.present();
-        }
-      );
         this.isuser=true;
         const loading=await this.loadingController.create({
           duration:500,
@@ -488,19 +431,19 @@ export class SignupPage implements OnInit {
         this.router.navigate(['main']);
         return (await loading).present();
       }
-      console.log('isuser value',this.isuser);
+      //console.log('isuser value',this.isuser);
 
     });
-    if(this.isuser===false)
-      {
-        const alert = await this.alertCtrl.create({
-          message: 'User with this Mail ID/UID already exists',
-          buttons: ['OK']
-        });
-        await alert.present();
-      }
-    console.log('console msg',this.isuser);
-    console.log('entire details are: ',this.userdetails);
+    // if(this.isuser===false)
+    //   {
+    //     const alert = await this.alertCtrl.create({
+    //       message: 'User with this Mail ID/UID already exists',
+    //       buttons: ['OK']
+    //     });
+    //     await alert.present();
+    //   }
+    // console.log('console msg',this.isuser);
+    // console.log('entire details are: ',this.userdetails);
 
   }
 

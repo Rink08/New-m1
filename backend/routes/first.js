@@ -1,6 +1,4 @@
 const express=require('express');
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" })
 
 const {body}=require('express-validator');
 
@@ -111,14 +109,6 @@ router.put('/acceptchatrequest',authController.acceptchatrequest);
 router.delete('/deletechatrequest/:uid',authController.deletechatrequest);
 router.get('/getchatrequest/:uid',authController.getchatrequest);
 
-// router.post("/upload", upload.single("photo"), (req, res) => {
-//   console.log(req.file);
-//   res.json({ fileUrl: 'http://localhost:5000/auth/images/' + req.file.filename });
-// });
-//router.get('/image',authController.uploadImageFile);
-
-
-//router.post('/upload',authController.upload);
 router.get('/image/:uid',authController.image);
 router.post('/uploadblob',authController.uploadblob);
 router.delete('/deleteImage/:id',authController.deleteImage);
@@ -126,10 +116,5 @@ router.put('/updateSetProfile',authController.updateSetProfile);
 router.get('/imageCount/:uid',authController.imageCount);
 router.get('/getProfilePhoto/:uid/:id',authController.getProfilePhoto);
 router.get('/getSetProfileId/:uid',authController.getSetProfileId);
-
-// const uploads = require('./../config/upload.config');
-// const fileWorker = require('./../controllers/first');
-
-// 	router.post('http://localhost:5000/api/uploadfile', uploads.single("uploadfile"), fileWorker.upload);
 
 module.exports=router;

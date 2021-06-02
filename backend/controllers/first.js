@@ -6,7 +6,6 @@ const User=require('../models/user');
 
 
 
-
 exports.signup = async(req,res,next)=>{
   const errors=validationResult(req);
   console.log(errors);
@@ -119,8 +118,8 @@ exports.signup = async(req,res,next)=>{
     const r5 = await User.savefamily(userfamily);
     const r6 = await User.saveother(userother);
     const r7 = await User.savepartner(userpartner);
-
     const u = await User.insertSetP({uid: uid})
+
 
     // console.log(result);
 
@@ -760,61 +759,12 @@ exports.getchatrequest=async(req,res,next)=>{
   }
 };
 
-//**************************
-
-
-// exports.uploadImageFile = async(req,res,next) => {
-//     console.log(req.body);
-// };
-
-// var multer  = require('multer');
-// var fileUpload= require('./../middleware/upload');
-//console.log(fileUpload);
-
-// exports.upload=async(req,res,next)=>{
-//   //console.log(req.body);
-//   try{
-//         var upload = multer({
-//                     storage: fileUpload.files.storage(),
-//                     allowedFile:fileUpload.files.allowedFile
-//                     }).single('photo');
-//                     //console.log(req.body.photo);
-//         upload(req, res, function (err) {
-//           //console.log(req.body);
-//            if (err instanceof multer.MulterError) {
-//               res.send(err);
-//            } else if (err) {
-//               res.send(err);
-//            }else{
-//             const uid = req.body.uid;
-//              const name = req.file;
-//              const name1 = name.filename;
-
-//              const obj = {
-//                uid: uid,
-//                image_name: name1
-//              }
-//             //console.log(obj);
-//             const result= User.insertimage(obj);
-//              res.status(200).json(result);
-//               //res.render('upload-form');
-//               //console.log(req.file);
-//               //res.json({ fileUrl: 'http://localhost:5000/auth/images/' + req.file.filename });
-//            }
-
-//         })
-//       }
-//       catch(err){
-//          console.log('err',err);
-//       }
-// }
-
 exports.image=async(req,res,next)=>{
   const uid=req.params.uid;
   try{
     let imgdata = [];
     const user=await User.image(uid);
-    //console.log(user[0]);
+    //console.log(user);
     for(let i=0;i<user[0].length;i++){
       const c = Buffer.from(user[0][i]['data'],"utf8")
       const bb = c.toString("utf8");
@@ -899,10 +849,13 @@ exports.getProfilePhoto = async(req,res,next) => {
   const id = req.params.id;
   try{
     const img=await User.getProfilePhoto(uid,id);
-    //console.log(img);
-      const c = Buffer.from(img[0][0]['data'],"utf8")
-      const bb = c.toString("utf8");
-      res.status(200).json({message:bb});
+      //console.log(img[0].length);
+      if(img[0].length === 0){ res.status(200).json({message:'no'});}
+      else{
+        const c = Buffer.from(img[0][0]['data'],"utf8")
+        const bb = c.toString("utf8");
+        res.status(200).json({message:bb});
+      }
 
   }catch(err){
     console.log(err.message);
@@ -913,8 +866,16 @@ exports.getSetProfileId = async(req,res,next) => {
   const uid=req.params.uid;
   try{
       const id=await User.getSetProfileId(uid);
-      res.status(200).json(id);
+      if(id[0].length === 0){
+        res.status(200).json({id:null});
+      }
+      else{
+        res.status(200).json({id:id[0][0]['setProfile']});
+      }
+      //res.status(200).json(id);
   }catch(err){
     console.log(err.message);
   }
 }
+
+

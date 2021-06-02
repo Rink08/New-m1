@@ -1,29 +1,79 @@
-//.background{
+// .background{
 //   --background:url('../../assets/fingure\ ring.jpg') no-repeat center center fixed;
 //   background-size: cover;
 
 
- //}
+//  }
+
+
 ion-text{
-  font-size: 70%;
+  font-size: 75%;
+}
+
+// div{
+//   background-image: url("Android3.png");
+//   background-size: 100% 100%;
+// }
+ion-fab-button{
+  background-color: white;
+  border-radius: 50%;
+}
+
+.smallcircle{
+  position: absolute;
+  width: 163px;
+  height: 179px;
+  left: -13px;
+  top: -56px;
+  border-radius: 50%;
+  background: #4A4BAE;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.circle{
+  position: absolute;
+  width: 313px;
+  height: 327px;
+  left: 85px;
+  top: -115px;
+  border-radius: 50%;
+  background: #4B4CD3;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.circle3{
+  position: absolute;
+  width: 72px;
+  height: 71px;
+  left: 13px;
+  top: 650px;
+  border-radius: 50%;
+  background: #4A4BAE;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.circle4{
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  left: 58px;
+  top: 630px;
+  border-radius: 50%;
+  background: #33348D;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
  ion-card{
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
   overflow: visible;
-  background-color: #f5f0e1;
-  width: 100%;
-  border-radius:20px 20px 20px 20px;
-
-
+  border-radius: 10% 10% 10% 10%;
+  box-shadow: none;
+  border: 2px solid #adacab;
 }
+
 
 ion-button{
-  background-color: #ff6e40;
-  border-radius: 0 15px 0 15px;
+  background-color: #4849A1;
+  border-radius: 15px 15px 15px 15px;
   margin-right: 10%;
 }
-
 
 .text1{
   text-align: center;
@@ -39,17 +89,16 @@ ion-card-content{
   font-size: large;
 }
 
-ion-item{
-  border: 2px solid #ff6e40;
-  border-radius: 30px;
-}
-
 ion-input{
-  width:105%;
+  width:100%;
   // border-radius: 5px;
   font-size:medium;
-background-color: transparent;
  }
+
+ ion-item{
+  border: 2px solid #adacab;
+  border-radius: 30px;
+}
 
 .btn1{
 

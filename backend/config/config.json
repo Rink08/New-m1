@@ -2,6 +2,5 @@
   "host":"localhost",
   "user":"root",
   "database":"matrimony",
-  "password":"1234567",
-  "dialect": "mysql"
+  "password":"1234567"
 }

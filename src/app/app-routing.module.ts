@@ -30,8 +30,7 @@ const routes: Routes = [
   {
     path: 'matchprofile',
     loadChildren: () => import('./matchprofile/matchprofile.module').then( m => m.MatchprofilePageModule)
-  },
-  {
+  },  {
     path: 'searchresult',
     loadChildren: () => import('./searchresult/searchresult.module').then( m => m.SearchresultPageModule)
   },
@@ -43,11 +42,6 @@ const routes: Routes = [
     path: 'imgupload',
     loadChildren: () => import('./imgupload/imgupload.module').then( m => m.ImguploadPageModule)
   },
-  {
-    path: 'upload-modal',
-    loadChildren: () => import('./upload-modal/upload-modal.module').then( m => m.UploadModalPageModule)
-  },
-
 
 
 

@@ -233,7 +233,7 @@ module.exports=class User{
       'inner join education_details e on b.uid=e.uid ' +
       'inner join other_details o on b.uid=o.uid ' + whereclause;
 
-      console.log(str);
+      //console.log(str);
       return db.execute(str);
     }
 
@@ -351,93 +351,85 @@ static onelike(from){
   );
 }
 
-      static savechatrequest(basic){
-        return db.execute(
-            'INSERT INTO chatrequest(send_from,send_to,status) VALUES(?,?,?)',
-            [basic.from,basic.to,basic.status]
-        );
-      }
+static savechatrequest(basic){
+  return db.execute(
+      'INSERT INTO chatrequest(send_from,send_to,status) VALUES(?,?,?)',
+      [basic.from,basic.to,basic.status]
+  );
+}
 
-      static showchatrequests(to){
-        return db.execute(
-            'SELECT * FROM chatrequest WHERE send_to=?',[to]
-        );
-      }
+static showchatrequests(to){
+  return db.execute(
+      'SELECT * FROM chatrequest WHERE send_to=?',[to]
+  );
+}
 
-      static acceptchatrequest(user){
-        return db.execute(
-            'UPDATE chatrequest SET status=? WHERE send_from=?',[user.status,user.send_from]
-        );
-      }
+static acceptchatrequest(user){
+  return db.execute(
+      'UPDATE chatrequest SET status=? WHERE send_from=?',[user.status,user.send_from]
+  );
+}
 
-      static deletechatrequest(from){
-        return db.execute(
-            'DELETE FROM chatrequest WHERE send_from=?',[from]
-        );
-      }
+static deletechatrequest(from){
+  return db.execute(
+      'DELETE FROM chatrequest WHERE send_from=?',[from]
+  );
+}
 
-      static getchatrequest(from){
-        return db.execute(
-            'SELECT * FROM chatrequest WHERE send_from=? or send_to=?',[from,from]
-        );
-      }
+static getchatrequest(from){
+  return db.execute(
+      'SELECT * FROM chatrequest WHERE send_from=? or send_to=?',[from,from]
+  );
+}
 
+static image(uid){
+  return db.execute(
+      'SELECT * FROM images where uid=?',[uid]
+  );
+}
 
-    //   static insertimage(user){
-    //     return db.execute(
-    //         'INSERT INTO imageup(uid,image_name) VALUES(?,?)',
-    //         [user.uid,user.image_name]
-    //     );
-    // }
+static deleteImage(id){
+  return db.execute(
+      'delete FROM images where imgId=?',[id]
+  );
+}
 
-    static image(uid){
-      return db.execute(
-          'SELECT * FROM images where uid=?',[uid]
-      );
-    }
-
-    static deleteImage(id){
-      return db.execute(
-          'delete FROM images where imgId=?',[id]
-      );
-    }
-
-    static imageCount(uid){
-      return db.execute(
-          'select count(?) FROM images',[uid]
-      );
-    }
+static imageCount(uid){
+  return db.execute(
+      'select count(?) FROM images',[uid]
+  );
+}
 
 
-  static uploadblob(user){
-    return db.execute(
-        'INSERT INTO images VALUES(?,?,?)',
-        [user.img,user.uid,0]
-    );
-  }
+static uploadblob(user){
+return db.execute(
+    'INSERT INTO images VALUES(?,?,?)',
+    [user.img,user.uid,0]
+);
+}
 
-  static insertSetP(user){
-    return db.execute(
-      'insert into setProfile values(?,?)',[user.uid,null]
-    )
-  }
+static insertSetP(user){
+return db.execute(
+  'insert into setProfile values(?,?)',[user.uid,null]
+)
+}
 
-  static getSetProfileId(uid){
-    return db.execute(
-      'select setProfile from setProfile where uid=?',[uid]
-    )
-  }
+static getSetProfileId(uid){
+return db.execute(
+  'select setProfile from setProfile where uid=?',[uid]
+)
+}
 
-  static updateSetProfile(user){
-    return db.execute(
-      'update setProfile set setProfile=? where uid=?',[user.setProfile,user.uid]
-    )
-  }
+static updateSetProfile(user){
+return db.execute(
+  'update setProfile set setProfile=? where uid=?',[user.setProfile,user.uid]
+)
+}
 
-  static getProfilePhoto(uid,id){
-      return db.execute(
-        'select data from images where uid=? and imgId=?',[uid,id]
-      )
-  }
+static getProfilePhoto(uid,id){
+  return db.execute(
+    'select data from images where uid=? and imgId=?',[uid,id]
+  )
+}
 
 }

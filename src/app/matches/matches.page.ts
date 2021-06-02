@@ -10,6 +10,7 @@ import { AuthService } from './../services/auth.service';
 import { SigninPage } from './../signin/signin.page';
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-matches',
   templateUrl: './matches.page.html',
@@ -30,10 +31,8 @@ export class MatchesPage implements OnInit {
   AllMatches=[];
   static allMatch = [];
   comparemale=[{id:1,name:'male'},{id:2,name:'Male'}];
-  displayImage = '';
 
   constructor(private authService: AuthService,public router: Router) { }
-
 
   ngOnInit() {
     if(this.signin===''){
@@ -64,14 +63,17 @@ export class MatchesPage implements OnInit {
           for(let i=0;i<user[0].length;i++)
           {
             this.authService.getSetProfileId(user[0][i].uid).subscribe((msgs)=>{
-              if(msgs[0].length !== 0){
-                this.authService.getProfilePhoto(user[0][i].uid,msgs[0][0]['setProfile']).subscribe((msg1)=>{
-                    user[0][i].displayImage = 'data:image/jpeg;base64,' + msg1.body['message'];
-                });
-              }
-              else {
-                user[0][i].displayImage = './../../assets/icon/profile.png';
-              }
+              console.log('idmsg',msgs);
+
+                  if(msgs['id'] !== null ){
+                    this.authService.getProfilePhoto(user[0][i].uid,msgs['id']).subscribe((msg1)=>{
+                        user[0][i].displayImage = 'data:image/jpeg;base64,' + msg1.body['message'];
+                    });
+                  }
+                  else {
+                    user[0][i].displayImage = './../../assets/icon/profile.png';
+                  }
+
             });
             const date=user[0][i].dob.substring(0,4);
             // eslint-disable-next-line radix
@@ -151,14 +153,17 @@ export class MatchesPage implements OnInit {
           for(let i=0;i<user[0].length;i++)
           {
             this.authService.getSetProfileId(user[0][i].uid).subscribe((msgs)=>{
-              if(msgs[0].length !== 0){
-                this.authService.getProfilePhoto(user[0][i].uid,msgs[0][0]['setProfile']).subscribe((msg1)=>{
-                    user[0][i].displayImage = 'data:image/jpeg;base64,' + msg1.body['message'];
-                });
-              }
-              else {
-                user[0][i].displayImage = './../../assets/icon/profile.png';
-              }
+              console.log('idmsg',msgs);
+
+                  if(msgs['id'] !== null ){
+                    this.authService.getProfilePhoto(user[0][i].uid,msgs['id']).subscribe((msg1)=>{
+                        user[0][i].displayImage = 'data:image/jpeg;base64,' + msg1.body['message'];
+                    });
+                  }
+                  else {
+                    user[0][i].displayImage = './../../assets/icon/profile.png';
+                  }
+
             });
             const date=user[0][i].dob.substring(0,4);
             // eslint-disable-next-line radix
@@ -170,9 +175,8 @@ export class MatchesPage implements OnInit {
             user[0][i].chatreq=0;
             user[0][i].height = Object.keys(this.height_to_num).find(key => this.height_to_num[key] === user[0][i].height);
             this.AllMatches.push(user[0][i]);
-            console.log('matches',this.AllMatches);
             this.authService.onerequest(this.uid).subscribe((msg1)=>{
-              //console.log('one request',msg1);
+              console.log('one request',msg1);
 
               // eslint-disable-next-line @typescript-eslint/prefer-for-of
               for(let j=0;j<msg1[0].length;j++)
@@ -180,11 +184,11 @@ export class MatchesPage implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let p=0;p<this.AllMatches.length;p++)
                 {
-                  // console.log('true');
-                  // console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
+                  console.log('true');
+                  console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
                   if(this.AllMatches[p].uid === msg1[0][j].send_to)
                   {
-                    //console.log('true');
+                    console.log('true');
                     this.AllMatches[p].flag=1;
                   }
                 }
@@ -350,6 +354,10 @@ export class MatchesPage implements OnInit {
     this.authService.requests(req).subscribe((msg)=>{
       console.log(msg);
     });
+  }
+  view1()
+  {
+    console.log('check profile');
   }
 
 

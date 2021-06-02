@@ -1,24 +1,22 @@
-<!-- <ion-header">
-  <ion-toolbar">
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="home"></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
 
+  <ion-fab vertical="top" horizontal="start" slot="fixed">
+    <ion-fab-button color = "white" routerLink='/home'>
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-  <div style="height: 100%; display: flex; align-items:center; justify-content:center;
-  background: #1e3d59;">
+  <div style="height: 100%; display: flex; align-items:center; justify-content:center;">
+    <div class="smallcircle"></div>
+    <div class="circle"></div>
 
-  <ion-card>
+  <ion-card style="width: 100%; margin-top: 20%;">
     <ion-card-header>
-      <ion-card-title><h4>Sign In</h4></ion-card-title>
+      <ion-card-title><h4 style="color: #4A4BAE;margin-left: 5%;font-weight: bolder;">Sign In</h4></ion-card-title>
     </ion-card-header>
     <ion-card-content>
 
-    <form [formGroup]="submit">
+     <form [formGroup]="submit">
       <ion-item>
         <span><ion-icon name="person"></ion-icon></span>&nbsp;
         <!-- <ion-label position="floating">Email<ion-text color="danger">*</ion-text></ion-label> -->
@@ -40,9 +38,11 @@
 
     </form>
      <br>
-    <ion-button color="#ff6e40"  style="--box-shadow:none;" (click)="signin()">SIGN IN</ion-button>
+    <ion-button color="#070E52"  style="--box-shadow:none; margin-left: 5%;"  (click)="signin()">SIGN IN</ion-button>
     </ion-card-content>
   </ion-card>
+  <div class="circle4"></div>
+  <div class="circle3"></div>
   </div>
   </ion-content>
 

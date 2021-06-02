@@ -6,7 +6,7 @@ import { LoadingController } from '@ionic/angular';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from './../services/auth.service';
-import { ChatserviceService } from './../Chatservice.service';
+import { ChatserviceService } from './../chatservice.service';
 
 
 

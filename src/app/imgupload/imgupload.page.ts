@@ -9,7 +9,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit,ElementRef, ViewChild  } from '@angular/core';
-import { AuthService,ApiImage } from './../services/auth.service';
+import { AuthService} from './../services/auth.service';
 import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
 import { Platform, ActionSheetController,AlertController ,ModalController,NavController, LoadingController, ToastController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
