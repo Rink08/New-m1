@@ -291,4 +291,29 @@ httpOptionsFile: {headers: HttpHeaders}={
   }
 
 
+
+  dislike(from,to)
+  {
+    return this.http.delete(`http://192.168.1.2:5000/auth/dislike/${from}/${to}`,this.httpOptions);
+  }
+
+  unsendinterest(from,to)
+  {
+    return this.http.delete(`http://192.168.1.2:5000/auth/unsendinterest/${from}/${to}`,this.httpOptions);
+  }
+
+
+  verifyemail(mail)
+  {
+    return this.http.get(`http://192.168.1.2:5000/auth/verifyemail/${mail}`,this.httpOptions);
+  }
+
+  verifyuid(uid)
+  {
+    return this.http.get(`http://192.168.1.2:5000/auth/verifyuid/${uid}`,this.httpOptions);
+  }
+
+
+
+
 }
