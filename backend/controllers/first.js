@@ -823,14 +823,14 @@ exports.uploadblob=async(req,res,next)=>{
     //console.log(base64);
     //const buff2 = Buffer.from(base64,"base64");
    // const base64D = buff2.toString("utf8");
-    console.log(buff);
+
     const basic = {
       img: buff,
       uid: req.body.uid
      }
       const user=await User.uploadblob(basic);
 
-      //console.log(basic);
+      console.log(basic);
       res.status(200).json({meessage:'inserted'});
 
 
@@ -928,6 +928,45 @@ exports.unsendinterest=async(req,res,next)=>{
   try{
     const result=await User.unsendinterest(from,to);
     res.status(200).json({message:'deleted'});
+  }
+  catch(err)
+  {
+    console.log(err.message);
+  }
+}
+
+
+exports.getcountrynames=async(req,res,next)=>{
+  try{
+    const result=await User.getCountries();
+    res.status(200).json(result);
+
+  }catch(err)
+  {
+    console.log(err.message);
+  }
+}
+
+
+exports.getstatenames=async(req,res,next)=>{
+  try{
+    const id=req.params.id;
+    const result=await User.getStates(id);
+    res.status(200).json(result);
+
+  }
+  catch(err)
+  {
+    console.log(err.message);
+  }
+}
+
+exports.getcitynames=async(req,res,next)=>{
+  try{
+    const id=req.params.id;
+    const result=await User.getCities(id);
+    res.status(200).json(result);
+
   }
   catch(err)
   {

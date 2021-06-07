@@ -135,6 +135,7 @@
                 <ion-label position="floating">State<ion-text color="danger">*</ion-text></ion-label>
                 <ionic-selectable
                 [items]="stateInfo"
+                [(ngModel)]="selectstate"
                 itemValueField= StateName itemTextField= StateName
                 headerColor="light"
                 [canSearch]="true"
@@ -155,6 +156,7 @@
                 <ion-label position="floating">City<ion-text color="danger">*</ion-text></ion-label>
                 <ionic-selectable
                 [items]="cities"
+                [(ngModel)]="selectcity"
                 itemValueField= city itemTextField= city
                 headerColor="light"
                 [canSearch]="true"
@@ -388,11 +390,12 @@
             <ion-icon src="./../../assets/icon/back.svg"></ion-icon>
           </ion-fab-button>
         </ion-fab>
-        <ion-fab style="margin-left: 30%;">
+        <ion-button type="submit" style="margin-left: 30%;" fill="outline" color="#ff6e40" shape="round" (click)="signup()">Save</ion-button>
+        <!-- <ion-fab style="margin-left: 30%;">
           <ion-fab-button color = "white" (click)="signup()">
             <ion-icon src="./../../assets/icon/registration.svg"></ion-icon>
           </ion-fab-button>
-        </ion-fab>
+        </ion-fab> -->
 <br><br><br><br><br>
       </ion-card-content>
     </ion-card>

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable quote-props */
 /* eslint-disable @typescript-eslint/member-ordering */
@@ -29,7 +30,7 @@ httpOptions: {headers: HttpHeaders}={
 
 httpOptionsFile: {headers: HttpHeaders}={
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  headers: new HttpHeaders({'Accept':'application/json', 'enctype': 'multipart/form-data' })
+  headers : new HttpHeaders({'Accept':'application/json','enctype': 'multipart/form-data'})
 };
 
   constructor(private http: HttpClient,private errorHandlerService: ErrorHandlerService,private router: Router) { }
@@ -262,6 +263,7 @@ httpOptionsFile: {headers: HttpHeaders}={
   }
 
   insertimageblob(user){
+
     return this.http.post('http://localhost:5000/auth/uploadblob',user,this.httpOptionsFile);
   }
 
@@ -312,6 +314,22 @@ httpOptionsFile: {headers: HttpHeaders}={
   {
     return this.http.get(`http://localhost:5000/auth/verifyuid/${uid}`,this.httpOptions);
   }
+
+  getcountrynames()
+  {
+    return this.http.get(`http://localhost:5000/auth/getcountrynames`,this.httpOptions);
+  }
+
+  getstatenames(id)
+  {
+    return this.http.get(`http://localhost:5000/auth/getstatenames/${id}`,this.httpOptions);
+  }
+
+  getcitynames(id)
+  {
+    return this.http.get(`http://localhost:5000/auth/getcitynames/${id}`,this.httpOptions);
+  }
+
 
 
 

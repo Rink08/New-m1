@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Message } from './../chatservice.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Router } from '@angular/router';
@@ -12,6 +13,7 @@ import { Platform } from '@ionic/angular';
 import { Plugins,CameraResultType,CameraSource } from '@capacitor/core';
 import { createWorker } from 'tesseract.js';
 import { AuthService } from './../services/auth.service';
+import { ChatserviceService } from './../chatservice.service';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { Camera }=Plugins;
@@ -36,6 +38,8 @@ export class SignupPage implements OnInit {
   public countryInfo: any[] = [];
   public cityInfo: any[] = [];
   cities = [];
+  selectstate=null;
+  selectcity=null;
 
   mt = [];
   caste = [];
@@ -63,7 +67,7 @@ export class SignupPage implements OnInit {
   uidverify=0;
   dateverify=0;
 
-  constructor(private imagePicker: ImagePicker,private router: Router,public loadingController: LoadingController,
+  constructor(private imagePicker: ImagePicker,private router: Router,public loadingController: LoadingController,private chatService: ChatserviceService,
     public formBuilder: FormBuilder,public alertCtrl: AlertController,private country: CountriesService,private authService: AuthService) {
       this.slideTwoForm = this.formBuilder.group({
         firstName: ['', Validators.compose([Validators.minLength(3), Validators.pattern('[a-zA-Z ]*'), Validators.required])],
@@ -99,7 +103,16 @@ export class SignupPage implements OnInit {
 
 
     ngOnInit() {
-      this.getCountries();
+      // this.getCountries();
+
+      this.authService.getcountrynames().subscribe((msg)=>{
+        // eslint-disable-next-line @typescript-eslint/prefer-for-of
+        for(let i=0;i<msg[0].length;i++)
+        {
+          this.countryInfo.push({id:msg[0][i].id,CountryName:msg[0][i].name});
+        }
+        console.log(this.countryInfo);
+      });
 
       this.authService.getMotherTongue().subscribe((msg)=>{
         // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -140,17 +153,17 @@ export class SignupPage implements OnInit {
     this.slideThreeForm.controls.subcaste.disable();
 
   }
-  getCountries(){
-    this.country.allCountries().
-    subscribe(
-      data2 => {
-        this.countryInfo=data2.Countries;
-        console.log('Data:', this.countryInfo);
-      },
-      err => console.log(err),
-      () => console.log('complete')
-    );
-  }
+  // getCountries(){
+  //   this.country.allCountries().
+  //   subscribe(
+  //     data2 => {
+  //       this.countryInfo=data2.Countries;
+  //       console.log('Data:', this.countryInfo);
+  //     },
+  //     err => console.log(err),
+  //     () => console.log('complete')
+  //   );
+  // }
 
   onChangeCaste(event: {
     component: IonicSelectableComponent;
@@ -173,26 +186,71 @@ export class SignupPage implements OnInit {
      //console.log(event.value.name);
   }
 
+  // onChangeCountry(event: {
+  //   component: IonicSelectableComponent;
+  //   value: any;
+  // }) {
+  //    this.stateInfo=event.value.States;
+  // }
+
+  // onChangeState(event: {
+  //   component: IonicSelectableComponent;
+  //   value: any;
+  // }) {
+  //   //  this.stateInfo=event.value.States;
+  //    this.cityInfo=event.value.Cities;
+  //    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //    for (let i = 0; i < this.cityInfo.length; i++){
+  //              this.cities.push({id: i,city: this.cityInfo[i]});
+  //             }
+  //   // this.cities = [Object.assign({}, this.cityInfo)];
+  //   //console.log(this.cities);
+  // }
+
+
+
   onChangeCountry(event: {
     component: IonicSelectableComponent;
     value: any;
-  }) {
-     this.stateInfo=event.value.States;
-  }
 
+  })
+  {
+    this.selectstate={id:-1,CountryName:null};
+    this.selectcity={id:-1,city:null};
+    console.log(event.value);
+    //console.log(event.value.id);
+    this.authService.getstatenames(event.value.id).subscribe((msg)=>{
+      this.stateInfo=[];
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for(let i=0;i<msg[0].length;i++)
+      {
+        this.stateInfo.push({id:msg[0][i].id,StateName:msg[0][i].name});
+      }
+    });
+
+  }
   onChangeState(event: {
     component: IonicSelectableComponent;
     value: any;
-  }) {
-    //  this.stateInfo=event.value.States;
-     this.cityInfo=event.value.Cities;
-     // eslint-disable-next-line @typescript-eslint/prefer-for-of
-     for (let i = 0; i < this.cityInfo.length; i++){
-               this.cities.push({id: i,city: this.cityInfo[i]});
-              }
-    // this.cities = [Object.assign({}, this.cityInfo)];
-    //console.log(this.cities);
+
+  })
+  {
+    console.log(event);
+    this.selectcity={id:-1,city:null};
+    this.authService.getcitynames(event.value.id).subscribe((msg)=>{
+      console.log(msg);
+      this.cities=[];
+       // eslint-disable-next-line @typescript-eslint/prefer-for-of
+       for(let i=0;i<msg[0].length;i++)
+       {
+         this.cities.push({id:msg[0][i].id,city:msg[0][i].name});
+       }
+
+    });
+
+
   }
+
 
   async swipeNext(){
     if(this.image === '')
@@ -433,7 +491,7 @@ export class SignupPage implements OnInit {
       occupation:occ1.name
 
     };
-    console.log(this.userdetails);
+    //console.log(this.userdetails);
     this.authService.signup(this.userdetails)
     .subscribe(async (msg)=>{
       if(msg)
@@ -445,6 +503,21 @@ export class SignupPage implements OnInit {
           translucent:true,
           cssClass:'custom-class custom-loading'
         });
+        this.chatService
+      .signup(this.userdetails.mail,this.userdetails.password)
+      .then(
+        (user) => {
+         //
+        },
+        async (err) => {
+          loading.dismiss();
+          const alert = await this.alertCtrl.create({
+            header: 'Sign up failed',
+            message: err.message,
+            buttons: ['OK'],
+          });
+        }
+        );
         console.log('console msg',msg);
         this.router.navigate(['main']);
         return (await loading).present();
