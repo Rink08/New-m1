@@ -18,6 +18,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MatchesPage implements OnInit {
   static viewvalue=0;
+  static obj = {};
   //uid=SigninPage.siginUid;
   signup=SigninPage.siginUid;
   signin=SignupPage.signUpUid;
@@ -30,11 +31,12 @@ export class MatchesPage implements OnInit {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   AllMatches=[];
   static allMatch = [];
-  comparemale=[{id:1,name:'male'},{id:2,name:'Male'}];
 
-  constructor(private authService: AuthService,public router: Router) { }
+  constructor(private authService: AuthService,public router: Router) {
+   }
 
-  ngOnInit() {
+  ionViewDidEnter(){
+    this. AllMatches=[];
     if(this.signin===''){
       this.uid = this.signup;
     }
@@ -43,7 +45,7 @@ export class MatchesPage implements OnInit {
     }
     const d=new Date();
 
-    console.log('date',d.getFullYear());
+    //console.log('date',d.getFullYear());
 
     this.authService.getheightrange().subscribe((msg)=>{
       for(let i=1;i<msg[0].length+1;i++){
@@ -53,17 +55,17 @@ export class MatchesPage implements OnInit {
 
     this.authService.getBasicDetails(this.uid).subscribe((msg)=>{
       MatchesPage.gender=msg[0][0].gender;
-      console.log(MatchesPage.gender);
+      //console.log(MatchesPage.gender);
       if(MatchesPage.gender === 'male' || MatchesPage.gender === 'Male')
       {
         this.authService.fetchAllFemale().subscribe((user)=>{
-          console.log('user',user);
+          //console.log('user',user);
 
           // eslint-disable-next-line @typescript-eslint/prefer-for-of
           for(let i=0;i<user[0].length;i++)
           {
             this.authService.getSetProfileId(user[0][i].uid).subscribe((msgs)=>{
-              console.log('idmsg',msgs);
+              //console.log('idmsg',msgs);
 
                   if(msgs['id'] !== null ){
                     this.authService.getProfilePhoto(user[0][i].uid,msgs['id']).subscribe((msg1)=>{
@@ -78,28 +80,28 @@ export class MatchesPage implements OnInit {
             const date=user[0][i].dob.substring(0,4);
             // eslint-disable-next-line radix
             const num=parseInt(date);
-            console.log('age is',d.getFullYear()-num);
+            //console.log('age is',d.getFullYear()-num);
             user[0][i].age=d.getFullYear()-num;
             user[0][i].flag=0;
             user[0][i].like=0;
             user[0][i].chatreq=0;
             user[0][i].height = Object.keys(this.height_to_num).find(key => this.height_to_num[key] === user[0][i].height);
-            console.log('each user',user[0][i]);
+            //console.log('each user',user[0][i]);
             this.AllMatches.push(user[0][i]);
-            console.log('female matches',this.AllMatches);
+            //console.log('female matches',this.AllMatches);
             this.authService.onerequest(this.uid).subscribe((msg1)=>{
-
+              console.log('ints',msg1);
               // eslint-disable-next-line @typescript-eslint/prefer-for-of
               for(let j=0;j<msg1[0].length;j++)
               {
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let p=0;p<this.AllMatches.length;p++)
                 {
-                  console.log('true');
-                  console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
+                  //console.log('true');
+                  //console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
                   if(this.AllMatches[p].uid === msg1[0][j].send_to)
                   {
-                    console.log('true');
+                    //console.log('true');
                     this.AllMatches[p].flag=1;
                   }
                 }
@@ -147,13 +149,13 @@ export class MatchesPage implements OnInit {
       else if(MatchesPage.gender === 'Female' || MatchesPage.gender === 'female')
       {
         this.authService.fetchAllMale().subscribe((user)=>{
-          console.log(user);
+          //console.log(user);
           //this.AllMatches=user[0];
           // eslint-disable-next-line @typescript-eslint/prefer-for-of
           for(let i=0;i<user[0].length;i++)
           {
             this.authService.getSetProfileId(user[0][i].uid).subscribe((msgs)=>{
-              console.log('idmsg',msgs);
+              //console.log('idmsg',msgs);
 
                   if(msgs['id'] !== null ){
                     this.authService.getProfilePhoto(user[0][i].uid,msgs['id']).subscribe((msg1)=>{
@@ -168,7 +170,7 @@ export class MatchesPage implements OnInit {
             const date=user[0][i].dob.substring(0,4);
             // eslint-disable-next-line radix
             const num=parseInt(date);
-           // console.log('age is',d.getFullYear()-num);
+           // //console.log('age is',d.getFullYear()-num);
             user[0][i].age=d.getFullYear()-num;
             user[0][i].flag=0;
             user[0][i].like=0;
@@ -176,7 +178,7 @@ export class MatchesPage implements OnInit {
             user[0][i].height = Object.keys(this.height_to_num).find(key => this.height_to_num[key] === user[0][i].height);
             this.AllMatches.push(user[0][i]);
             this.authService.onerequest(this.uid).subscribe((msg1)=>{
-              console.log('one request',msg1);
+              //console.log('one request',msg1);
 
               // eslint-disable-next-line @typescript-eslint/prefer-for-of
               for(let j=0;j<msg1[0].length;j++)
@@ -184,11 +186,11 @@ export class MatchesPage implements OnInit {
                 // eslint-disable-next-line @typescript-eslint/prefer-for-of
                 for(let p=0;p<this.AllMatches.length;p++)
                 {
-                  console.log('true');
-                  console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
+                  //console.log('true');
+                  //console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
                   if(this.AllMatches[p].uid === msg1[0][j].send_to)
                   {
-                    console.log('true');
+                    //console.log('true');
                     this.AllMatches[p].flag=1;
                   }
                 }
@@ -239,7 +241,215 @@ export class MatchesPage implements OnInit {
     });
 
   MatchesPage.allMatch = this.AllMatches;
-  console.log('All ',MatchesPage.allMatch);
+  //console.log('All ',MatchesPage.allMatch);
+  }
+
+  ngOnInit() {
+  //   if(this.signin===''){
+  //     this.uid = this.signup;
+  //   }
+  //   else{
+  //     this.uid = this.signin;
+  //   }
+  //   const d=new Date();
+
+  //   //console.log('date',d.getFullYear());
+
+  //   this.authService.getheightrange().subscribe((msg)=>{
+  //     for(let i=1;i<msg[0].length+1;i++){
+  //       this.height_to_num[msg[0][i-1].height] = msg[0][i-1].height_in_num;
+  //     }
+  //   });
+
+  //   this.authService.getBasicDetails(this.uid).subscribe((msg)=>{
+  //     MatchesPage.gender=msg[0][0].gender;
+  //     //console.log(MatchesPage.gender);
+  //     if(MatchesPage.gender === 'male' || MatchesPage.gender === 'Male')
+  //     {
+  //       this.authService.fetchAllFemale().subscribe((user)=>{
+  //         //console.log('user',user);
+
+  //         // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //         for(let i=0;i<user[0].length;i++)
+  //         {
+  //           this.authService.getSetProfileId(user[0][i].uid).subscribe((msgs)=>{
+  //             //console.log('idmsg',msgs);
+
+  //                 if(msgs['id'] !== null ){
+  //                   this.authService.getProfilePhoto(user[0][i].uid,msgs['id']).subscribe((msg1)=>{
+  //                       user[0][i].displayImage = 'data:image/jpeg;base64,' + msg1.body['message'];
+  //                   });
+  //                 }
+  //                 else {
+  //                   user[0][i].displayImage = './../../assets/icon/profile.png';
+  //                 }
+
+  //           });
+  //           const date=user[0][i].dob.substring(0,4);
+  //           // eslint-disable-next-line radix
+  //           const num=parseInt(date);
+  //           //console.log('age is',d.getFullYear()-num);
+  //           user[0][i].age=d.getFullYear()-num;
+  //           user[0][i].flag=0;
+  //           user[0][i].like=0;
+  //           user[0][i].chatreq=0;
+  //           user[0][i].height = Object.keys(this.height_to_num).find(key => this.height_to_num[key] === user[0][i].height);
+  //           //console.log('each user',user[0][i]);
+  //           this.AllMatches.push(user[0][i]);
+  //           //console.log('female matches',this.AllMatches);
+  //           this.authService.onerequest(this.uid).subscribe((msg1)=>{
+
+  //             // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //             for(let j=0;j<msg1[0].length;j++)
+  //             {
+  //               // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //               for(let p=0;p<this.AllMatches.length;p++)
+  //               {
+  //                 //console.log('true');
+  //                 //console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
+  //                 if(this.AllMatches[p].uid === msg1[0][j].send_to)
+  //                 {
+  //                   //console.log('true');
+  //                   this.AllMatches[p].flag=1;
+  //                 }
+  //               }
+  //             }
+
+  //           });
+
+  //           this.authService.onelike(this.uid).subscribe((msg2)=>{
+  //             // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //             for(let j=0;j<msg2[0].length;j++)
+  //             {
+  //               // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //               for(let p=0;p<this.AllMatches.length;p++)
+  //               {
+  //                 if(this.AllMatches[p].uid === msg2[0][j].send_to)
+  //                 {
+  //                   this.AllMatches[p].like=1;
+  //                 }
+  //               }
+  //             }
+
+  //           });
+
+  //           this.authService.getchatrequest(this.uid).subscribe((msg3) => {
+  //             for(let j=0;j<msg3[0].length;j++)
+  //             {
+  //               for(let p=0;p<this.AllMatches.length;p++)
+  //               {
+  //                 if((this.AllMatches[p].uid === msg3[0][j].send_to || this.AllMatches[p].uid === msg3[0][j].send_from)  && msg3[0][j].status === 'accepted')
+  //                 {
+  //                   this.AllMatches[p].chatreq=2;
+  //                 }
+  //                 if((this.AllMatches[p].uid === msg3[0][j].send_to || this.AllMatches[p].uid === msg3[0][j].send_from) && msg3[0][j].status === 'pending')
+  //                 {
+  //                   this.AllMatches[p].chatreq=1;
+  //                 }
+  //               }
+  //             }
+  //           });
+
+  //         }
+
+  //       });
+  //     }
+  //     else if(MatchesPage.gender === 'Female' || MatchesPage.gender === 'female')
+  //     {
+  //       this.authService.fetchAllMale().subscribe((user)=>{
+  //         //console.log(user);
+  //         //this.AllMatches=user[0];
+  //         // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //         for(let i=0;i<user[0].length;i++)
+  //         {
+  //           this.authService.getSetProfileId(user[0][i].uid).subscribe((msgs)=>{
+  //             //console.log('idmsg',msgs);
+
+  //                 if(msgs['id'] !== null ){
+  //                   this.authService.getProfilePhoto(user[0][i].uid,msgs['id']).subscribe((msg1)=>{
+  //                       user[0][i].displayImage = 'data:image/jpeg;base64,' + msg1.body['message'];
+  //                   });
+  //                 }
+  //                 else {
+  //                   user[0][i].displayImage = './../../assets/icon/profile.png';
+  //                 }
+
+  //           });
+  //           const date=user[0][i].dob.substring(0,4);
+  //           // eslint-disable-next-line radix
+  //           const num=parseInt(date);
+  //          // //console.log('age is',d.getFullYear()-num);
+  //           user[0][i].age=d.getFullYear()-num;
+  //           user[0][i].flag=0;
+  //           user[0][i].like=0;
+  //           user[0][i].chatreq=0;
+  //           user[0][i].height = Object.keys(this.height_to_num).find(key => this.height_to_num[key] === user[0][i].height);
+  //           this.AllMatches.push(user[0][i]);
+  //           this.authService.onerequest(this.uid).subscribe((msg1)=>{
+  //             //console.log('one request',msg1);
+
+  //             // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //             for(let j=0;j<msg1[0].length;j++)
+  //             {
+  //               // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //               for(let p=0;p<this.AllMatches.length;p++)
+  //               {
+  //                 //console.log('true');
+  //                 //console.log(this.AllMatches[p].uid,msg1[0][j].send_to);
+  //                 if(this.AllMatches[p].uid === msg1[0][j].send_to)
+  //                 {
+  //                   //console.log('true');
+  //                   this.AllMatches[p].flag=1;
+  //                 }
+  //               }
+  //             }
+
+  //           });
+
+  //           this.authService.onelike(this.uid).subscribe((msg2)=>{
+  //             for(let j=0;j<msg2[0].length;j++)
+  //             {
+  //               for(let p=0;p<this.AllMatches.length;p++)
+  //               {
+  //                 if(this.AllMatches[p].uid === msg2[0][j].send_to)
+  //                 {
+  //                   this.AllMatches[p].like=1;
+  //                 }
+  //               }
+  //             }
+
+  //           });
+
+  //           this.authService.getchatrequest(this.uid).subscribe((msg3) => {
+  //             for(let j=0;j<msg3[0].length;j++)
+  //             {
+  //               for(let p=0;p<this.AllMatches.length;p++)
+  //               {
+  //                 if((this.AllMatches[p].uid === msg3[0][j].send_to || this.AllMatches[p].uid === msg3[0][j].send_from) && msg3[0][j].status === 'accepted')
+  //                 {
+  //                   this.AllMatches[p].chatreq=2;
+  //                 }
+  //                 if((this.AllMatches[p].uid === msg3[0][j].send_to || this.AllMatches[p].uid === msg3[0][j].send_from) && msg3[0][j].status === 'pending')
+  //                 {
+  //                   this.AllMatches[p].chatreq=1;
+  //                 }
+  //               }
+  //             }
+  //           });
+
+
+  //         }
+
+
+  //       });
+  //     }
+
+
+
+  //   });
+
+  // MatchesPage.allMatch = this.AllMatches;
+  // //console.log('All ',MatchesPage.allMatch);
 
 
   }
@@ -248,7 +458,7 @@ export class MatchesPage implements OnInit {
     NotificationsPage.profileuid='';
     MatchesPage.viewvalue=1;
     MatchesPage.matchUid=uid;
-    console.log(MatchesPage.matchUid);
+    //console.log(MatchesPage.matchUid);
     this.router.navigate(['matchprofile']);
   }
 
@@ -288,7 +498,7 @@ export class MatchesPage implements OnInit {
       to:uidreq
     };
     this.authService.savelikes(reqe).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
     });
 
   }
@@ -309,14 +519,14 @@ export class MatchesPage implements OnInit {
       status:'pending'
     };
     this.authService.chatrequests(req).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
     });
 
   }
 
   interest(uidreq)
   {
-    console.log('matches length',this.AllMatches.length);
+    //console.log('matches length',this.AllMatches.length);
 
       for(let i=0;i<this.AllMatches.length;i++)
       {
@@ -345,26 +555,26 @@ export class MatchesPage implements OnInit {
 
 
 
-    console.log(this.uid);
-    console.log(uidreq);
+    //console.log(this.uid);
+    //console.log(uidreq);
     const req={
       from:this.uid,
       to:uidreq
     };
     this.authService.requests(req).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
     });
   }
   view1()
   {
-    console.log('check profile');
+    //console.log('check profile');
   }
 
 
 
   dislike(uidreq)
   {
-    console.log(uidreq);
+    //console.log(uidreq);
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for(let i=0;i<this.AllMatches.length;i++)
     {
@@ -376,7 +586,7 @@ export class MatchesPage implements OnInit {
     }
 
     this.authService.dislike(this.uid,uidreq).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
     });
   }
 
@@ -393,12 +603,19 @@ export class MatchesPage implements OnInit {
     }
 
     this.authService.unsendinterest(this.uid,uidreq).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
     });
 
 
   }
 
-
+  goToChat(email,name,img){
+    MatchesPage.obj = {
+      email,
+      name,
+      img
+    };
+    this.router.navigate(['/chatwindow']);
+  }
 
 }

@@ -8,14 +8,15 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/member-ordering */
+
 import { Component, OnInit,ElementRef, ViewChild  } from '@angular/core';
 import { AuthService} from './../services/auth.service';
-import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
+//import { Plugins, CameraResultType, CameraSource } from '@capacitor/core';
 import { Platform, ActionSheetController,AlertController ,ModalController,NavController, LoadingController, ToastController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { read } from 'node:fs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+
 import { Router } from '@angular/router';
 import { SigninPage } from '../signin/signin.page';
 import { SignupPage } from '../signup/signup.page';
@@ -38,9 +39,9 @@ export class ImguploadPage implements OnInit {
   signin=SignupPage.signUpUid;
   count = 0;
 
-
+ // "cordova-js": "^6.0.0",
   constructor(private api: AuthService,
-    private imagePicker: ImagePicker,
+
     public router: Router,
     private alertCtrl: AlertController,
     //private filepath: FilePath,
@@ -70,26 +71,26 @@ export class ImguploadPage implements OnInit {
 
     this.getImage();
 
-    this.api.imageCount(this.uid).subscribe((msg)=>{
-      //console.log('count',msg);
-      this.count = msg[0][0]["count(?)"];
-      //console.log(this.count);
-    });
+    // this.api.imageCount(this.uid).subscribe((msg)=>{
+    //   //console.log('count',msg);
+    //   this.count = msg[0][0]["count(?)"];
+    //   console.log(this.count);
+    // });
   }
 
   pickImage(sourceType) {
     const options: CameraOptions = {
-      quality: 100,
+      quality: 80,
       sourceType: sourceType,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: true,
-      correctOrientation: true
+      correctOrientation: true,
+      allowEdit: false
     };
     this.camera.getPicture(options).then((imageData) => {
       const img = 'data:image/jpeg;base64,'+ imageData;
-      this.imageCompress.compressFile(img, 50, 50).then(
+      this.imageCompress.compressFile(img,1,50,50).then(
         result => {
           const r = result.slice(23,result.length);
           this.api.insertimageblob({uid:this.uid,img:r}).subscribe((msg)=>{
@@ -140,7 +141,7 @@ export class ImguploadPage implements OnInit {
 
     // });
 
-    if(this.count===10){
+    if(this.image.length===10){
       let alert = await this.alertCtrl.create({
         message: 'You can upload only 10 Photos',
         buttons: ['OK']

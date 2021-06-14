@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'Rxjs';
 import { ChatPage } from './../chat/chat.page';
 import { SigninPage } from './../signin/signin.page';
+import { InterestedprofilePage } from './../interestedprofile/interestedprofile.page';
+import { MatchesPage } from './../matches/matches.page';
 
 @Component({
   selector: 'app-chatwindow',
@@ -20,20 +22,55 @@ export class ChatwindowPage implements OnInit {
 
   messages: Observable<any[]>;
   newMsg = '';
-  name1 = ChatPage.obj['name'];
+  name1;
+  img;
+  email;
   messageDateString = '';
 
   constructor(private chatService: ChatserviceService, private router: Router) {
 
   }
 
+
+
   ngOnInit() {
-    this.messages = this.chatService.getChatMessages(ChatPage.obj['email'],SigninPage.email);
+    if(InterestedprofilePage.obj['name'] !== undefined){
+       this.name1 = InterestedprofilePage.obj['name'];
+    }
+    else if(ChatPage.obj['name'] !== undefined){
+       this.name1 = ChatPage.obj['name'];
+    }
+    else{
+      this.name1 = MatchesPage.obj['name'];
+    }
+
+    if(InterestedprofilePage.obj['img'] !== undefined){
+      this.img = InterestedprofilePage.obj['img'];
+    }
+    else if(ChatPage.obj['img'] !== undefined){
+      this.img = ChatPage.obj['img'];
+    }
+    else{
+      this.img = MatchesPage.obj['img'];
+    }
+
+    if(InterestedprofilePage.obj['email'] !== undefined){
+      this.email = InterestedprofilePage.obj['email'];
+    }
+    else if(ChatPage.obj['email'] !== undefined){
+      this.email = ChatPage.obj['email'];
+    }
+    else{
+      this.email = MatchesPage.obj['email'];
+    }
+
+    this.messages = this.chatService.getChatMessages(this.email,SigninPage.email);
+
   }
 
   sendMessage() {
     if(this.newMsg !== ''){
-      this.chatService.addChatMessage(this.newMsg,ChatPage.obj['email']).then((msg) => {
+      this.chatService.addChatMessage(this.newMsg,this.email).then((msg) => {
         this.newMsg = '';
         setTimeout(() => {
           this.content.scrollToBottom();

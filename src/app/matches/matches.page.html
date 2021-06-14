@@ -71,7 +71,7 @@
               <button color="#070E52" class="text4"><ion-icon name="chatbubbles-outline" ></ion-icon>Request sent</button>
             </div>
             <div *ngIf="match.chatreq===2" style="margin-left: 10%;">
-              <button color="#070E52" class="text4"><ion-icon name="chatbubbles-outline" ></ion-icon>Chat</button>
+              <button color="#070E52" class="text4" (click)="goToChat(match.mail,match.name,match.displayImage)"><ion-icon name="chatbubbles-outline" ></ion-icon>Chat</button>
             </div>
 
             <div style="margin-left: 8%;margin-top: -2%;">

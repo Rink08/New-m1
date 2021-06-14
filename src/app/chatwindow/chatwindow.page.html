@@ -22,7 +22,7 @@
       <ion-back-button defaultHref="chat" style="color: white;"></ion-back-button>
     </ion-buttons>
     <ion-avatar>
-      <img src='./../../assets/icon/favicon.png'>
+      <img [src]='img'>
     </ion-avatar>
     <span class="details">
       <h1>{{name1}}</h1>
@@ -78,7 +78,7 @@
       </ion-col>
       <ion-col size="2">
         <ion-button color="#feacac" class="send-button" (click)="sendMessage()">
-          <ion-icon name="send-sharp"></ion-icon>
+          <ion-icon style="font-size: 25px;" name="send-sharp"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>

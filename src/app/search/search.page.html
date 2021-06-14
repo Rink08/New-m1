@@ -14,9 +14,10 @@
   <form [formGroup]="searchForm">
   <ion-item>
     <ion-label position="floating">Marital Statue</ion-label>
+
     <ionic-selectable
       #selectComponent
-      item-content
+
       [items]="maritalstatue"
       itemValueField="id" itemTextField="name"
       headerColor="light"
@@ -26,11 +27,11 @@
       [isMultiple]="true"
       (onSelect)="toggleMS($event)">
 
-      <!-- <ng-template ionicSelectableValueTemplate let-maritalstatue="value">
+      <ng-template ionicSelectableValueTemplate let-maritalstatue="value">
 				<div class="ionic-selectable-value-item">
 					{{formatmaritalstatue(maritalstatue)}}
 				</div>
-			</ng-template> -->
+			</ng-template>
       <ng-template ionicSelectableCloseButtonTemplate>
         <ion-icon name="close-circle"></ion-icon>
       </ng-template>

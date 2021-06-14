@@ -99,7 +99,7 @@ export class SearchPage implements OnInit {
       {
         this.countryInfo.push({id:msg[0][i].id,CountryName:msg[0][i].name});
       }
-      console.log(this.countryInfo);
+      //console.log(this.countryInfo);
     });
 
     // this.getCountries();
@@ -141,7 +141,8 @@ export class SearchPage implements OnInit {
     });
 
     this.authService.getSearchDetails(this.uid).subscribe((msg)=>{
-      console.log(msg);
+      // //console.log('get search',msg[0]);
+      if(msg[0].length !== 0){
       if(msg[0][0].age_from != null){
         this.searchForm.get('agefrom').setValue(msg[0][0].age_from);
       }
@@ -244,8 +245,8 @@ export class SearchPage implements OnInit {
         }
         this.searchForm.get('diet').setValue(z);
       }
+    }
     });
-
   }
 
 
@@ -259,7 +260,7 @@ export class SearchPage implements OnInit {
      this.subcaste = [];
       for(let j=0;j<a.length;j++){
         this.authService.getSubCaste(a[j].name).subscribe((msg)=>{
-          console.log(msg[0]);
+          //console.log(msg[0]);
           if(msg[0].length > 0){
             this.searchForm.controls.subCaste.enable();
             //eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -280,10 +281,10 @@ export class SearchPage implements OnInit {
   //   subscribe(
   //     data2 => {
   //       this.countryInfo=data2.Countries;
-  //       console.log('Data:', this.countryInfo);
+  //       //console.log('Data:', this.countryInfo);
   //     },
-  //     err => console.log(err),
-  //     () => console.log('complete')
+  //     err => //console.log(err),
+  //     () => //console.log('complete')
   //   );
   // }
 
@@ -321,13 +322,13 @@ export class SearchPage implements OnInit {
   {
     this.selectstate={id:-1,CountryName:null};
     this.selectcity={id:-1,city:null};
-    console.log(event.value);
-    //console.log(event.value.id);
+    ////console.log(event.value);
+    ////console.log(event.value.id);
     const c=event.value;
     this.stateInfo=[];
     for(let j=0;j<c.length;j++)
     {
-      console.log(c[j].id);
+      ////console.log(c[j].id);
 
     this.authService.getstatenames(c[j].id).subscribe((msg)=>{
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -337,21 +338,21 @@ export class SearchPage implements OnInit {
       }
     });
   }
-  console.log(this.stateInfo);
+  //console.log(this.stateInfo);
 
   }
   onChangeState(event)
   {
-    console.log(event);
+    //console.log(event);
     this.selectcity={id:-1,city:null};
     this.cities=[];
     const c=event.value;
     for(let j=0;j<c.length;j++)
     {
-      console.log(c[j].id);
+      //console.log(c[j].id);
 
     this.authService.getcitynames(c[j].id).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
 
        // eslint-disable-next-line @typescript-eslint/prefer-for-of
        for(let i=0;i<msg[0].length;i++)
@@ -361,7 +362,7 @@ export class SearchPage implements OnInit {
 
     });
   }
-  console.log(this.stateInfo);
+  //console.log(this.stateInfo);
 
 
   }
@@ -386,7 +387,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.other.add(a.name);
-      console.log(this.other);
+      //console.log(this.other);
       this.selectComponent.toggleItems(false,this.maritalstatue.slice(0,1));
       for(let i=0;i<this.other.size;i++){
         this.selectComponent.toggleItems(true,[{id:Array.from(this.other)[i],name:Array.from(this.other)[i]}]);
@@ -401,7 +402,7 @@ export class SearchPage implements OnInit {
     const a = event.item;
     this.list = [];
     this.list.push(a.name);
-    console.log(this.list);
+    //console.log(this.list);
     if(this.list[0] === 'Any'){
       this.selectComponentCaste.toggleItems(false,this.caste.slice(1,this.caste.length));
       this.selectComponentCaste.toggleItems(true,this.caste.slice(0,1));
@@ -409,7 +410,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.othercaste.add(a.name);
-      //console.log(this.othercaste);
+      ////console.log(this.othercaste);
       this.selectComponentCaste.toggleItems(false,this.caste.slice(0,1));
       for(let i=0;i<this.othercaste.size;i++){
         this.selectComponentCaste.toggleItems(true,[{id:Array.from(this.othercaste)[i],name:Array.from(this.othercaste)[i]}]);
@@ -431,7 +432,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.othersubcaste.add(a.name);
-      //console.log(this.other);
+      ////console.log(this.other);
       this.selectComponentSubcaste.toggleItems(false,this.subcaste.slice(0,1));
       for(let i=0;i<this.othersubcaste.size;i++){
         this.selectComponentSubcaste.toggleItems(true,[{id:Array.from(this.othersubcaste)[i],name:Array.from(this.othersubcaste)[i]}]);
@@ -453,7 +454,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.otherhd.add(a.name);
-      //console.log(this.other);
+      ////console.log(this.other);
       this.selectComponentHD.toggleItems(false,this.edu.slice(0,1));
       for(let i=0;i<this.otherhd.size;i++){
         this.selectComponentHD.toggleItems(true,[{id:Array.from(this.otherhd)[i],name:Array.from(this.otherhd)[i]}]);
@@ -475,7 +476,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.otherocc.add(a.name);
-      //console.log(this.other);
+      ////console.log(this.other);
       this.selectComponentOcc.toggleItems(false,this.occ.slice(0,1));
       for(let i=0;i<this.otherocc.size;i++){
         this.selectComponentOcc.toggleItems(true,[{id:Array.from(this.otherocc)[i],name:Array.from(this.otherocc)[i]}]);
@@ -497,7 +498,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.otherdrink.add(a.name);
-      //console.log(this.other);
+      ////console.log(this.other);
       this.selectComponentDrink.toggleItems(false,this.drink.slice(0,1));
       for(let i=0;i<this.otherdrink.size;i++){
         this.selectComponentDrink.toggleItems(true,[{id:Array.from(this.otherdrink)[i],name:Array.from(this.otherdrink)[i]}]);
@@ -519,7 +520,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.othersmoke.add(a.name);
-      //console.log(this.other);
+      ////console.log(this.other);
       this.selectComponentSmoke.toggleItems(false,this.smoke.slice(0,1));
       for(let i=0;i<this.othersmoke.size;i++){
         this.selectComponentSmoke.toggleItems(true,[{id:Array.from(this.othersmoke)[i],name:Array.from(this.othersmoke)[i]}]);
@@ -541,7 +542,7 @@ export class SearchPage implements OnInit {
     }
     else{
       this.otherdiet.add(a.name);
-      //console.log(this.other);
+      ////console.log(this.other);
       this.selectComponentDiet.toggleItems(false,this.diet.slice(0,1));
       for(let i=0;i<this.otherdiet.size;i++){
         this.selectComponentDiet.toggleItems(true,[{id:Array.from(this.otherdiet)[i],name:Array.from(this.otherdiet)[i]}]);
@@ -726,29 +727,29 @@ export class SearchPage implements OnInit {
   }
 
   saveSearch(){
-    //console.log('key ',Object.keys(this.height_to_num).find(key => this.height_to_num[key] === '5.30'));
-    //console.log('gender ',this.gender);
+    ////console.log('key ',Object.keys(this.height_to_num).find(key => this.height_to_num[key] === '5.30'));
+    ////console.log('gender ',this.gender);
     this.data();
-    //console.log(this.userdetails);
+    ////console.log(this.userdetails);
     this.authService.putSearchDetails(this.userdetails).subscribe((msg)=>{
-      console.log(msg);
+      //console.log(msg);
     });
   }
 
   search(){
     this.data();
-    console.log(this.userdetails);
+    //console.log(this.userdetails);
     SearchPage.Result = [];
     this.authService.getSearch(this.userdetails).subscribe((msg)=>{
-      //console.log(msg[0]);
+      ////console.log(msg[0]);
       const a = msg[0];
       for(let i=0;i<a.length;i++){
         SearchPage.Result.push(a[i].uid);
       }
+      this.router.navigate(['searchresult']);
 
     });
     //console.log(SearchPage.Result);
-    this.router.navigate(['searchresult']);
   }
 
 }

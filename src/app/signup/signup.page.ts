@@ -4,19 +4,19 @@ import { Message } from './../chatservice.service';
 import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonSlides, LoadingController } from '@ionic/angular';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { CountriesService } from './../countries.service';
 import { Platform } from '@ionic/angular';
-import { Plugins,CameraResultType,CameraSource } from '@capacitor/core';
+//import { Plugins,CameraResultType,CameraSource } from '@capacitor/core';
 import { createWorker } from 'tesseract.js';
 import { AuthService } from './../services/auth.service';
 import { ChatserviceService } from './../chatservice.service';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const { Camera }=Plugins;
+//const { Camera }=Plugins;
 
 
 @Component({
@@ -67,7 +67,7 @@ export class SignupPage implements OnInit {
   uidverify=0;
   dateverify=0;
 
-  constructor(private imagePicker: ImagePicker,private router: Router,public loadingController: LoadingController,private chatService: ChatserviceService,
+  constructor(private router: Router,public loadingController: LoadingController,private chatService: ChatserviceService,
     public formBuilder: FormBuilder,public alertCtrl: AlertController,private country: CountriesService,private authService: AuthService) {
       this.slideTwoForm = this.formBuilder.group({
         firstName: ['', Validators.compose([Validators.minLength(3), Validators.pattern('[a-zA-Z ]*'), Validators.required])],

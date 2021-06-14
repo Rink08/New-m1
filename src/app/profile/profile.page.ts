@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { AlertController, IonSlides, LoadingController, ToastController  } from '@ionic/angular';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { CountriesService } from '../countries.service';
@@ -63,7 +62,7 @@ export class ProfilePage implements OnInit {
   diet=['Veg', 'Non-Veg Occasional',' Non-Veg Frequent', 'Eggetarian', 'Others (Jain / Vegan)'];
 
 
-  constructor(private imagePicker: ImagePicker,private router: Router,public loadingController: LoadingController,
+  constructor(private router: Router,public loadingController: LoadingController,
     public formBuilder: FormBuilder,public alertCtrl: AlertController,public toastController: ToastController,
     private country: CountriesService,private authService: AuthService) {
 

@@ -29,9 +29,9 @@ export class SearchresultPage implements OnInit {
 
   constructor(private authService: AuthService,public router: Router) { }
 
-  ionViewDidEnter(){}
+  ngOnInit(){}
 
-  ngOnInit() {
+  ionViewDidEnter() {
     if(this.signin===''){
       this.uid = this.signup;
     }

@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { ImagePicker } from '@ionic-native/image-picker/ngx';
+
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,7 +24,7 @@ import {NgxImageCompressService} from 'ngx-image-compress';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule, ],
-  providers: [ImagePicker,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Camera,NgxImageCompressService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, Camera,NgxImageCompressService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

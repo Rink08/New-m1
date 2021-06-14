@@ -12,7 +12,7 @@
 }
 
 .message {
-  width: 30px;
+  width: 20px;
   padding: 10px !important;
   border-radius: 15px;
   margin-bottom: 4px !important;
@@ -23,6 +23,7 @@
   background: #9394e7;
   color: rgb(10, 10, 10);
   border-radius: 20px;
+
 }
 
 .other-message {
@@ -48,16 +49,16 @@ ion-input{
               background: #ddd;
               border-radius: 20px;
               height: 48px;
-              --padding-start: 18px;
+              margin-left: 50px;
            }
 .send-button{
             margin-right: 20px;
             --box-shadow:none;
-            background-color: white;
+            background-color: rgb(255, 255, 255);
             // padding: 12px 12px 9px 15px;
-            border-radius: 45%;
+
             color: rgb(3, 3, 3);
-            font-size: 1.0rem;
+
 
           }
 
@@ -106,6 +107,9 @@ ion-content{
       }
     }
   }
+
+
+
 
 //   .conversation{
 //     background: #fff;

@@ -27,7 +27,7 @@ export class NotificationsPage implements OnInit {
 
    }
 
-  ngOnInit() {
+   ionViewDidEnter(){
     if(this.signin===''){
       this.uid = this.signup;
     }
@@ -70,6 +70,10 @@ export class NotificationsPage implements OnInit {
         }
       }
     });
+   }
+
+  ngOnInit() {
+
 
   }
 
